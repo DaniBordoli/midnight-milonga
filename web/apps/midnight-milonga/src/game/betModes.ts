@@ -1,0 +1,87 @@
+import type { BetModeMeta } from 'state-shared';
+
+import config from './config';
+
+// Bet modes shown in the bonus menu. Keys follow the SDK convention (upper case); the RGS matches the math
+// mode names (base, ante, bonus, super) ignoring case. No external assets: Stake blocks outside requests.
+// Social mode (stake.us) texts avoid restricted words: bet, buy, pay, purchase, cost, stake, cash...
+
+const noAssets = { icon: '', volatility: '', button: '', dialogImage: '', dialogVolatility: '' };
+const maxWin = (mode: keyof typeof config.betModes) => config.betModes[mode].max_win;
+
+export const getBetModeMeta = (social: boolean): BetModeMeta => ({
+	BASE: {
+		mode: 'BASE',
+		costMultiplier: config.betModes.base.cost,
+		type: 'default',
+		parent: '',
+		children: '',
+		maxWin: maxWin('base'),
+		assets: noAssets,
+		text: { title: '', dialog: '', button: '', betAmountLabel: '', tickerIdle: '', tickerSpin: '' },
+	},
+	ANTE: {
+		mode: 'ANTE',
+		costMultiplier: config.betModes.ante.cost,
+		type: 'activate',
+		parent: '',
+		children: '',
+		maxWin: maxWin('ante'),
+		assets: noAssets,
+		text: {
+			title: 'NOCHE DE GALA',
+			description: social
+				? 'Twice the chance to reach La Pista free spins on every spin.'
+				: 'Twice the chance to trigger La Pista free spins on every spin.',
+			dialog: social
+				? `Noche de Gala doubles the chance of reaching La Pista free spins. Each spin can be played for ${config.betModes.ante.cost}x the play amount. It stays on until you turn it off.`
+				: `Noche de Gala doubles the chance of triggering La Pista free spins, at ${config.betModes.ante.cost}x the bet. It stays active until you turn it off.`,
+			button: 'ACTIVATE',
+			betAmountLabel: 'NOCHE DE GALA',
+			tickerIdle: 'NOCHE DE GALA IS ACTIVE',
+			tickerSpin: 'GOOD LUCK',
+		},
+	},
+	BONUS: {
+		mode: 'BONUS',
+		costMultiplier: config.betModes.bonus.cost,
+		type: 'buy',
+		parent: '',
+		children: '',
+		maxWin: maxWin('bonus'),
+		assets: noAssets,
+		text: {
+			title: 'LA PISTA',
+			description: social
+				? 'Go straight to La Pista: 10 to 15 free spins with the Compás multiplier.'
+				: 'Instantly trigger La Pista: 10 to 15 free spins with the Compás multiplier.',
+			dialog: social
+				? `Get La Pista free spins right away for ${config.betModes.bonus.cost}x the play amount. Do you want to continue?`
+				: `Buy La Pista free spins for ${config.betModes.bonus.cost}x the bet. Do you want to continue?`,
+			button: social ? 'PLAY' : 'BUY',
+			betAmountLabel: 'LA PISTA',
+			tickerIdle: '',
+			tickerSpin: '',
+		},
+	},
+	SUPER: {
+		mode: 'SUPER',
+		costMultiplier: config.betModes.super.cost,
+		type: 'buy',
+		parent: '',
+		children: '',
+		maxWin: maxWin('super'),
+		assets: noAssets,
+		text: {
+			title: 'LA ÚLTIMA TANDA',
+			description: 'Free spins with the Compás starting at x5 and an Abrazo guaranteed on the first spin.',
+			dialog: social
+				? `Get La Última Tanda right away for ${config.betModes.super.cost}x the play amount. Do you want to continue?`
+				: `Buy La Última Tanda for ${config.betModes.super.cost}x the bet. Do you want to continue?`,
+			button: social ? 'PLAY' : 'BUY',
+			betAmountLabel: 'LA ÚLTIMA TANDA',
+			tickerIdle: '',
+			tickerSpin: '',
+		},
+	},
+});

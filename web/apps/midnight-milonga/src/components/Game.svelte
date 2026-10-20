@@ -25,9 +25,10 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
-	import I18nTest from './I18nTest.svelte';
 	import Compas from './Compas.svelte';
 	import FeatureBanner from './FeatureBanner.svelte';
+	import GameRulesContent from './GameRulesContent.svelte';
+	import PayTableContent from './PayTableContent.svelte';
 
 	const context = getContext();
 
@@ -76,7 +77,7 @@
 			{#snippet logo()}
 				<Text
 					anchor={{ x: 1, y: 0 }}
-					text="ADD YOUR LOGO"
+					text="PAMPA PLAY"
 					style={{
 						fontFamily: 'proxima-nova',
 						fontSize: REM * 1.5,
@@ -95,13 +96,17 @@
 		{/if}
 		<FreeSpinOutro />
 		<Transition />
-
-		<I18nTest />
 	{/if}
 </App>
 
 <Modals>
 	{#snippet version()}
-		<GameVersion version="0.0.0" />
+		<GameVersion version="0.1.0" />
+	{/snippet}
+	{#snippet gameRules()}
+		<GameRulesContent />
+	{/snippet}
+	{#snippet payTable()}
+		<PayTableContent />
 	{/snippet}
 </Modals>
