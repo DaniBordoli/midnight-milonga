@@ -206,7 +206,7 @@ def pluck(freq, seconds, brightness=0.5):
     return env(out, 0.001, seconds)
 
 
-# ---- options offered for review (written with --options; the chosen one is mapped in OPTIONS_CHOSEN) ----
+# ---- takes offered for review with --options; chosen: reel stop A (felt), anticipation C (bandoneon) ----
 
 
 def reel_stop_felt():
@@ -297,7 +297,7 @@ def main(out, options=False):
     sounds = {
         "sfx_btn_general": (btn_general(), 0.6),
         "sfx_btn_spin": (btn_spin(), 0.7),
-        "sfx_reel_stop_1": (reel_stop(), 0.8),
+        "sfx_reel_stop_1": (reel_stop_felt(), 0.7),
         "sfx_winlevel_small": (winlevel_small(), 0.7),
         "jng_intro_fs": (jingle_intro(), 0.75),
         "sfx_superfreespin": (superfreespin(), 0.8),
@@ -308,7 +308,7 @@ def main(out, options=False):
         "sfx_wild_explode": (wild_explode(), 0.75),
         "sfx_multiplier_landing": (multiplier_landing(), 0.7),
         "sfx_multiplier_update": (multiplier_update(), 0.7),
-        "sfx_anticipation": (anticipation(), 0.6),
+        "sfx_anticipation": (anticipation_bandoneon(), 0.7),
     }
     for step in range(1, 6):
         sounds[f"sfx_scatter_stop_{step}"] = (scatter_stop(step), 0.7)
