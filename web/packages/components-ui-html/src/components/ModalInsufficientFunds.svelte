@@ -12,7 +12,7 @@
 <!-- shown when a bet is pressed without enough balance; no play request is sent -->
 {#if stateModal.modal?.name === 'insufficientFunds'}
 	<Popup zIndex={zIndex.modal} onclose={() => (stateModal.modal = null)}>
-		<BaseContent maxWidth="480px">
+		<BaseContent maxWidth="500px">
 			<BaseTitle>
 				{i18nDerived.notification()}
 			</BaseTitle>

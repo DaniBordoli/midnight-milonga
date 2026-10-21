@@ -2,6 +2,7 @@
 	import { Container, Sprite, Text } from 'pixi-svelte';
 	import { Button, type ButtonProps } from 'components-pixi';
 	import { OnHotkey } from 'components-shared';
+	import { stateModal, stateUi } from 'state-shared';
 
 	import ButtonBetProvider from './ButtonBetProvider.svelte';
 	import { UI_BASE_FONT_SIZE, UI_BASE_SIZE, UI_GOLD, UI_FONT_FAMILY } from '../constants';
@@ -13,8 +14,9 @@
 
 <ButtonBetProvider>
 	{#snippet children({ key, onpress })}
-		<!-- no 'disabled': without enough balance the button only looks dimmed and answers with the insufficient-funds notice -->
-		<OnHotkey hotkey="Space" {onpress} />
+		<!-- space does nothing while a panel or the menu is open; without enough balance it answers with the
+			 insufficient-funds notice (the button only looks dimmed) -->
+		<OnHotkey hotkey="Space" disabled={!!stateModal.modal || stateUi.menuOpen} {onpress} />
 		<Button {...props} {sizes} {onpress}>
 			{#snippet children({ center, hovered, pressed })}
 				{@const stopping = !['spin_default', 'spin_disabled'].includes(key)}

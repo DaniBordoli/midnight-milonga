@@ -30,7 +30,7 @@
 	const scaled = $derived(scale < 1);
 </script>
 
-<BaseContent maxWidth="100%">
+<BaseContent maxWidth="100%" plain>
 	<div class="wrap" class:scaled>
 		<div
 			class="bonuses"

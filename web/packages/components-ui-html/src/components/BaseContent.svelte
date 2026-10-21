@@ -3,13 +3,15 @@
 
 	type Props = {
 		maxWidth: '100%' | '500px';
+		// no Art Deco frame: for layouts that position and scale their content themselves (small buy-bonus views)
+		plain?: boolean;
 		children: Snippet;
 	};
 
 	const props: Props = $props();
 </script>
 
-<div class="ui-popup-standard-content-wrap" style="--maxWidth: {props.maxWidth}; --zIndex: {100}">
+<div class="ui-popup-standard-content-wrap" class:plain={props.plain} style="--maxWidth: {props.maxWidth}; --zIndex: {100}">
 	{@render props.children()}
 </div>
 
@@ -34,5 +36,12 @@
 			inset 0 0 0 4px var(--mm-panel),
 			inset 0 0 0 5px var(--mm-gold-deep),
 			0 0 24px rgba(242, 214, 146, 0.15);
+
+		&.plain {
+			padding: 0;
+			border: none;
+			background: none;
+			box-shadow: none;
+		}
 	}
 </style>

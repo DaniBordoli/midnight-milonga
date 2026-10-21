@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import { stateBet, stateBetDerived } from 'state-shared';
+	import { stateBet, stateBetDerived, stateModal, stateUi } from 'state-shared';
 </script>
 
 <script lang="ts">
@@ -17,4 +17,5 @@
 	};
 </script>
 
-<OnHotkey hotkey="Space" onhold={spaceHoldOn} onholdend={spaceHoldOff} />
+<!-- holding space never auto-bets behind an open panel or menu -->
+<OnHotkey hotkey="Space" disabled={!!stateModal.modal || stateUi.menuOpen} onhold={spaceHoldOn} onholdend={spaceHoldOff} />

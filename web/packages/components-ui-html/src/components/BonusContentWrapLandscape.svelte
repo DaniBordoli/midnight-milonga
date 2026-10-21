@@ -27,7 +27,7 @@
 	const scale = $derived(Math.min(verticalScale, horizontalScale));
 </script>
 
-<BaseContent maxWidth="100%">
+<BaseContent maxWidth="100%" plain>
 	<div class="bonuses-wrap" use:resizeObserver={(value) => (contentRect = value)}>
 		<div class="bonuses" style="transform: scale({Math.min(scale, 1)});">
 			<BaseScrollable type="row" noScroll>
