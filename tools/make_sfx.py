@@ -1,6 +1,6 @@
 """Synthesize the short UI / reel sound effects (no samples, no third-party licences).
 
-Usage: math\\env\\Scripts\\python.exe tools\\make_sfx.py <output folder> [--options]
+Usage: math\\env\\Scripts\\python.exe tools\\make_sfx.py "<slot>/6. Audio/Efectos" [--options]
 Writes 44.1 kHz mono WAVs named like the game's sound keys (sfx_reel_stop_1.wav, ...).
 --options writes the alternative takes in OPTIONS instead, for review.
 """

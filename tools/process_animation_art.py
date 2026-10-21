@@ -1,7 +1,7 @@
 """Turn the Gemini animation art into game sprites.
 
 Usage (from the repo root):
-    math\\env\\Scripts\\python.exe tools\\process_animation_art.py "<para animaciones folder>"
+    math\\env\\Scripts\\python.exe tools\\process_animation_art.py "<slot>/4. Animaciones"
 
 - "key": plain chroma-green background (#00B140) removed, green spill corrected, cropped to content.
 - "add": glow art on pure black, kept as is (drawn with additive blending, black disappears).
@@ -21,37 +21,37 @@ OUT = os.path.join(ROOT, "web", "apps", "midnight-milonga", "static", "assets", 
 
 # output name: (folder prefix, file name start, mode, max size)
 ART = {
-    "loading_bg": ("1.", "Fondo de carga", "opaque", 2048),
-    "loading_bar": ("1.", "Marco de la barra", "key", 1024),
-    "loading_rose": ("1.", "cono de carga", "key", 512),
+    "loading_bg": ("01.", "Fondo de carga", "opaque", 2048),
+    "loading_bar": ("01.", "Marco de la barra", "key", 1024),
+    "loading_rose": ("01.", "cono de carga", "key", 512),
     "rosa_burst": ("10.", "explosion", "add", 768),
     "rosa_flying": ("10.", "single red rose", "key", 512),
     "anticipation": ("11.", "Anticipaci", "add", 1024),
     "win_frame": ("11.", "Marco de s", "add", 512),
     "board_frame": ("11.", "Marco final", "key", 1600),
-    "pista_title": ("2.", "Cartel del t", "key", 1024),
-    "pista_bg": ("2.", "Fondo", "opaque", 2048),
-    "total_win_panel": ("2.", "Free spins cierre", "key", 1024),
-    "spins_plate": ("2.", "Placa para", "key", 768),
-    "tanda_title": ("4.", "Cartel del t", "key", 1024),
-    "tanda_bg": ("4.", "Fondo", "opaque", 2048),
-    "tanda_couple": ("4.", "Pareja en el haz", "key", 1024),
-    "big_win": ("5.", "Premios grandes", "key", 1024),
-    "super_win": ("4 carteles de", "SUPER WIN", "key", 1024),
-    "mega_win": ("4 carteles de", "MEGA WIN", "key", 1024),
-    "epic_win": ("4 carteles de", "EPIC WIN", "key", 1024),
-    "max_win": ("4 carteles de", "MAX WIN", "key", 1024),
-    "sparkles": ("6.", "golden sparkle", "add", 1024),
-    "petals": ("6.", "red rose", "key", 1024),
-    "metronome_body": ("7.", "Cuerpo del metr", "key", 768),
-    "metronome_pendulum": ("7.", "ndulo suelto", "key", 768),
-    "banner_rosa": ("8.", "LA ROSA ROJA", "key", 1024),
-    "banner_abrazo": ("8.", "EL ABRAZO", "key", 1024),
-    "abrazo_trail": ("9.", "Estela dorada", "add", 1024),
-    "abrazo_1": ("9.", "walking toward", "key", 768),
-    "abrazo_2": ("9.", "meeting and joining", "key", 768),
-    "abrazo_3": ("9.", "in a close tango", "key", 768),
-    "abrazo_4": ("9.", "in a dramatic final", "key", 768),
+    "pista_title": ("02.", "Cartel del t", "key", 1024),
+    "pista_bg": ("02.", "Fondo", "opaque", 2048),
+    "total_win_panel": ("03.", "Panel TOTAL WIN", "key", 1024),
+    "spins_plate": ("02.", "Placa para", "key", 768),
+    "tanda_title": ("04.", "Cartel del t", "key", 1024),
+    "tanda_bg": ("04.", "Fondo", "opaque", 2048),
+    "tanda_couple": ("04.", "Pareja en el haz", "key", 1024),
+    "big_win": ("05.", "BIG WIN", "key", 1024),
+    "super_win": ("05.", "SUPER WIN", "key", 1024),
+    "mega_win": ("05.", "MEGA WIN", "key", 1024),
+    "epic_win": ("05.", "EPIC WIN", "key", 1024),
+    "max_win": ("05.", "MAX WIN", "key", 1024),
+    "sparkles": ("06.", "golden sparkle", "add", 1024),
+    "petals": ("06.", "red rose", "key", 1024),
+    "metronome_body": ("07.", "Cuerpo del metr", "key", 768),
+    "metronome_pendulum": ("07.", "ndulo suelto", "key", 768),
+    "banner_rosa": ("08.", "LA ROSA ROJA", "key", 1024),
+    "banner_abrazo": ("08.", "EL ABRAZO", "key", 1024),
+    "abrazo_trail": ("09.", "Estela dorada", "add", 1024),
+    "abrazo_1": ("09.", "walking toward", "key", 768),
+    "abrazo_2": ("09.", "meeting and joining", "key", 768),
+    "abrazo_3": ("09.", "in a close tango", "key", 768),
+    "abrazo_4": ("09.", "in a dramatic final", "key", 768),
 }
 
 
@@ -216,7 +216,7 @@ def main(src):
     print("petal frames:", petal_sheet(petals, OUT))
 
     # game title from the concept art folder next to "para animaciones"
-    title = Image.open(os.path.join(src, "..", "midnight milonga", "logo.jpg"))
+    title = Image.open(os.path.join(src, "..", "3. Arte Midnight Milonga", "logo.jpg"))
     fit(key_black(title), 1400).save(os.path.join(OUT, "title.png"), optimize=True)
     print("ok title")
 

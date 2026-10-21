@@ -1,6 +1,6 @@
 """Build the game's audio sprite (sounds.ogg/.mp3 + sounds.json) from the files in an audio folder.
 
-Usage: math\\env\\Scripts\\python.exe tools\\build_audio_sprite.py <audio folder>
+Usage: math\\env\\Scripts\\python.exe tools\\build_audio_sprite.py "<slot>/6. Audio"
 Needs ffmpeg on PATH. Effects come from tools/make_sfx.py (<sound key>.wav); the two music tracks are
 licensed downloads (see MUSIC below), looped as they are. The big-win music beds are an 8 s loop cut from
 the free-spin track, shared by every tier until each tier has its own music.
@@ -63,10 +63,15 @@ def loop_excerpt(x, start, seconds, crossfade=0.5):
     return body
 
 
+def files(folder):
+    """Every file under the audio folder (music and effects live in sub-folders)."""
+    return [os.path.join(d, n) for d, _, names in os.walk(folder) for n in sorted(names)]
+
+
 def find(folder, fragment):
-    for name in os.listdir(folder):
-        if fragment in name.lower():
-            return os.path.join(folder, name)
+    for path in files(folder):
+        if fragment in os.path.basename(path).lower():
+            return path
     raise FileNotFoundError(fragment)
 
 
@@ -77,9 +82,9 @@ def main(folder):
     bed = loop_excerpt(sounds["bgm_freespin"], start=20, seconds=8) * 0.9
     for key in WIN_BEDS:
         sounds[key] = bed
-    for name in sorted(os.listdir(folder)):
-        if name.endswith(".wav"):
-            sounds[name[:-4]] = decode(os.path.join(folder, name))
+    for path in files(folder):
+        if path.endswith(".wav"):
+            sounds[os.path.basename(path)[:-4]] = decode(path)
 
     # normalise music loudness to a common peak, effects keep the levels make_sfx.py gave them
     for key in MUSIC:
