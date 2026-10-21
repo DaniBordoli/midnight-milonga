@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { stateBet } from 'state-shared';
+	import { stateBet, stateUrlDerived } from 'state-shared';
 	import { getContext } from '../game/context';
 	import { onMount } from 'svelte';
 
@@ -9,6 +9,7 @@
 		if (stateBet.betToResume?.active && stateBet.betToResume.mode) {
 			stateBet.activeBetModeKey = stateBet.betToResume.mode;
 		}
-		context.eventEmitter.broadcast({ type: 'resumeBet' });
+		// a replay waits for the player's PLAY press (ReplayControls)
+		if (!stateUrlDerived.replay()) context.eventEmitter.broadcast({ type: 'resumeBet' });
 	});
 </script>

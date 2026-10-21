@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import type { RawSymbol, SymbolState } from './types';
+import { stateLayoutDerived } from './stateLayout';
 
 export const SYMBOL_SIZE = 120;
 
@@ -121,3 +122,7 @@ export const SCATTER_LAND_SOUND_MAP = {
 	4: 'sfx_scatter_stop_4',
 	5: 'sfx_scatter_stop_5',
 } as const;
+
+// The header (clock + game name, provider name) uses fixed-size text; on narrow canvases such as Stake's
+// small popout it shrinks so the two never overlap.
+export const headerScale = () => Math.min(1, Math.max(0.5, stateLayoutDerived.canvasSizes().width / 1100));

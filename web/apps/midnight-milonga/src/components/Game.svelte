@@ -4,14 +4,14 @@
 	import { EnablePixiExtension } from 'components-pixi';
 	import { EnableHotkey } from 'components-shared';
 	import { MainContainer } from 'components-layout';
-	import { App, Text, REM } from 'pixi-svelte';
-	import { stateModal } from 'state-shared';
+	import { App, Container, Text, REM } from 'pixi-svelte';
+	import { stateModal, stateUrlDerived } from 'state-shared';
 
 	import { UI, UiGameName } from 'components-ui-pixi';
 	import { GameVersion, Modals } from 'components-ui-html';
 
 	import { getContext } from '../game/context';
-	import { GAME_FONT } from '../game/constants';
+	import { GAME_FONT, headerScale } from '../game/constants';
 	import EnableSound from './EnableSound.svelte';
 	import EnableGameActor from './EnableGameActor.svelte';
 	import ResumeBet from './ResumeBet.svelte';
@@ -30,6 +30,7 @@
 	import FeatureBanner from './FeatureBanner.svelte';
 	import AbrazoDance from './AbrazoDance.svelte';
 	import RosaThrow from './RosaThrow.svelte';
+	import ReplayControls from './ReplayControls.svelte';
 	import GameRulesContent from './GameRulesContent.svelte';
 	import PayTableContent from './PayTableContent.svelte';
 
@@ -75,13 +76,16 @@
 
 		<UI>
 			{#snippet gameName()}
-				<UiGameName name="MIDNIGHT MILONGA" />
+				<Container scale={headerScale()}>
+					<UiGameName name="MIDNIGHT MILONGA" />
+				</Container>
 			{/snippet}
 			{#snippet logo()}
 				<!-- in portrait the clock + game name fill the top line, so the provider name drops to a second line -->
 				<Text
 					anchor={{ x: 1, y: 0 }}
-					y={context.stateLayoutDerived.layoutType() === 'portrait' ? REM * 2 : 0}
+					scale={headerScale()}
+					y={context.stateLayoutDerived.layoutType() === 'portrait' ? REM * 2 * headerScale() : 0}
 					text="PAMPA PLAY"
 					style={{
 						fontFamily: GAME_FONT,
@@ -103,6 +107,9 @@
 		{/if}
 		<FreeSpinOutro />
 		<Transition />
+		{#if stateUrlDerived.replay()}
+			<ReplayControls />
+		{/if}
 	{/if}
 </App>
 

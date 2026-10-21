@@ -106,26 +106,47 @@
 		}
 	};
 
+	// a currency code the browser can format (or the social-casino coins the amount helpers special-case)
+	const isUsableCurrency = (code: string) => {
+		if (['XGC', 'XSC'].includes(code)) return true;
+		try {
+			new Intl.NumberFormat('en', { style: 'currency', currency: code });
+			return true;
+		} catch {
+			return false;
+		}
+	};
+
+	// Replay: no session and no wallet calls. Optional URL parameters (currency, amount) are applied when
+	// valid and fall back otherwise, so a bare replay link still plays.
 	const handleReplay = async () => {
-		stateBet.betAmount = (stateUrlDerived.amount() / API_AMOUNT_MULTIPLIER) || 0;
-		stateBet.wageredBetAmount = (stateUrlDerived.amount() / API_AMOUNT_MULTIPLIER) || 0;
+		const amount = stateUrlDerived.amount() / API_AMOUNT_MULTIPLIER || 1;
+		stateBet.betAmount = amount;
+		stateBet.wageredBetAmount = amount;
 		stateBet.activeBetModeKey = stateUrlDerived.mode();
+		if (isUsableCurrency(stateUrlDerived.currency())) stateBet.currency = stateUrlDerived.currency() as typeof stateBet.currency;
 
-		const data = await requestReplay({
-			rgsUrl: stateUrlDerived.rgsUrl(),
-			game: stateUrlDerived.game(),
-			mode: stateUrlDerived.mode(),
-			version: stateUrlDerived.version(),
-			event: stateUrlDerived.event(),
-		});
-
-		if(data) {
+		try {
+			const data = await requestReplay({
+				rgsUrl: stateUrlDerived.rgsUrl(),
+				game: stateUrlDerived.game(),
+				mode: stateUrlDerived.mode(),
+				version: stateUrlDerived.version(),
+				event: stateUrlDerived.event(),
+			});
+			if (!data) throw new Error('empty replay response');
 			// @ts-ignore
 			stateBet.betToResume = {
 				...data,
 				event: '0',
 				active: true,
 				mode: stateUrlDerived.mode(),
+			};
+		} catch (error) {
+			console.error(error);
+			stateModal.modal = {
+				name: 'error',
+				error: { error: 'REPLAY_NOT_AVAILABLE', message: 'This round could not be loaded. Please check the link and try again.' },
 			};
 		}
 	};
