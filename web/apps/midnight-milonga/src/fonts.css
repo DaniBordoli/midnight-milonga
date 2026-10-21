@@ -10,3 +10,11 @@
 	font-weight: 600 900;
 	src: local('Segoe UI Semibold'), local('HelveticaNeue-Bold'), local('Roboto Bold'), local('Arial Bold');
 }
+
+/* Limelight (SIL Open Font License 1.1, see fonts/OFL.txt): the game's Art Deco display face, bundled
+   with the build so it is served from the Engine CDN like every other asset. */
+@font-face {
+	font-family: 'Limelight';
+	font-weight: 400;
+	src: url('./fonts/Limelight-Regular.ttf') format('truetype');
+}

@@ -57,9 +57,11 @@ export function detectWebGL() {
 }
 
 // Stake Engine games may not load external resources, so no web-font service is used: fonts must be
-// bundled or declared locally (@font-face) by the game. This only waits for those to be ready.
+// bundled or declared locally (@font-face) by the game. Canvas text never triggers a font download, so
+// every declared face is loaded here, before Pixi draws any text.
 export const preloadFont = async () => {
 	try {
+		await Promise.all([...document.fonts].map((face) => face.load().catch(() => undefined)));
 		await document.fonts.ready;
 	} catch (error) {
 		console.error(error);

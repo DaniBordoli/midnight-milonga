@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { GAME_FONT } from '../game/constants';
 	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
 	import { getSymbolInfo } from '../game/utils';
@@ -48,7 +49,7 @@
 		y={props.y}
 		text={`${props.rawSymbol.multiplier}X`}
 		style={{
-			fontFamily: 'Georgia, serif',
+			fontFamily: GAME_FONT,
 			fill: 0xf2d692,
 			fontSize: 50,
 		}}

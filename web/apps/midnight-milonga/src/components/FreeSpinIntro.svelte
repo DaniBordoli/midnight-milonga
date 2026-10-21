@@ -16,7 +16,7 @@
 	import { waitForResolve } from 'utils-shared/wait';
 
 	import { getContext } from '../game/context';
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { SYMBOL_SIZE, GAME_FONT } from '../game/constants';
 	import PressToContinue from './PressToContinue.svelte';
 
 	// La Pista / La Última Tanda intro, built from layered art (background, title plate, spins plate, couple).
@@ -86,20 +86,20 @@
 				anchor={0.5}
 				y={SYMBOL_SIZE * -0.05}
 				text={String(spins)}
-				style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.85, fontWeight: '700', fill: 0xf2d692 }}
+				style={{ fontFamily: GAME_FONT, fontSize: SYMBOL_SIZE * 0.85, fontWeight: '400', fill: 0xf2d692 }}
 			/>
 			<Text
 				anchor={0.5}
 				y={SYMBOL_SIZE * 0.62}
 				text="FREE SPINS"
-				style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.17, fontWeight: '700', fill: 0xece5d8, letterSpacing: 1 }}
+				style={{ fontFamily: GAME_FONT, fontSize: SYMBOL_SIZE * 0.17, fontWeight: '400', fill: 0xece5d8, letterSpacing: 1 }}
 			/>
 			{#if isSuper}
 				<Text
 					anchor={0.5}
 					y={SYMBOL_SIZE * 1.75}
 					text="COMPÁS STARTS AT x5 · ABRAZO ON THE FIRST SPIN"
-					style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.2, fontWeight: '700', fill: 0xf2d692, letterSpacing: 2 }}
+					style={{ fontFamily: GAME_FONT, fontSize: SYMBOL_SIZE * 0.2, fontWeight: '400', fill: 0xf2d692, letterSpacing: 2 }}
 				/>
 			{/if}
 		</Container>

@@ -71,10 +71,13 @@ export const SPIN_OPTIONS_FAST = {
 export const MOTION_BLUR_VELOCITY = 31;
 
 // win amounts (replaces the sample "gold" bitmap font)
+// Limelight is bundled (src/fonts.css); Georgia only shows if it ever failed to load
+export const GAME_FONT = 'Limelight, Georgia, serif';
+
 export const WIN_TEXT_STYLE = {
-	fontFamily: 'Georgia, serif',
+	fontFamily: GAME_FONT,
 	fontSize: SYMBOL_SIZE * 0.8,
-	fontWeight: '700',
+	fontWeight: '400',
 	fill: 0xf2d692,
 	stroke: { color: 0x4a1f10, width: 6 },
 	dropShadow: { color: 0x000000, blur: 8, distance: 0, alpha: 0.9 },

@@ -70,9 +70,9 @@
 				wordWrap: true,
 				wordWrapWidth: sizes.width * 0.55, // two lines, so the plate stays within the layout slot
 				fontFamily: UI_FONT_FAMILY,
-				fontWeight: '700',
-				fontSize: UI_BASE_FONT_SIZE * 0.5,
-				lineHeight: UI_BASE_FONT_SIZE * 0.52,
+				fontWeight: '400',
+				fontSize: UI_BASE_FONT_SIZE * 0.42,
+				lineHeight: UI_BASE_FONT_SIZE * 0.44,
 				fill: UI_GOLD,
 			}}
 		/>

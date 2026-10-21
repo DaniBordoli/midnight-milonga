@@ -10,7 +10,7 @@
 	import { FadeContainer } from 'components-pixi';
 
 	import { getContext } from '../game/context';
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { SYMBOL_SIZE, GAME_FONT } from '../game/constants';
 	import { anchorToPivot, Container, Rectangle, Text, type Sizes } from 'pixi-svelte';
 
 	const context = getContext();
@@ -71,7 +71,7 @@
 			<Text
 				text={'FREE SPIN'}
 				style={{
-					fontFamily: 'Georgia, serif', fontWeight: '700', fill: 0xf2d692,
+					fontFamily: GAME_FONT, fontWeight: '400', fill: 0xf2d692,
 					fontSize,
 					wordWrap: false,
 				}}
@@ -82,7 +82,7 @@
 				{...counterPosition}
 				anchor={{ x: 0.5, y: 0 }}
 				style={{
-					fontFamily: 'Georgia, serif', fontWeight: '700', fill: 0xf2d692,
+					fontFamily: GAME_FONT, fontWeight: '400', fill: 0xf2d692,
 					fontSize,
 				}}
 				onresize={(sizes) => (counterSizes = sizes)}

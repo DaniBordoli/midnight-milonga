@@ -15,14 +15,14 @@
 	// Midnight Milonga skin: gold caption, ivory amount, on the Art Deco info panel (art ratio 209 / 994)
 	const labelStyle = {
 		fontFamily: UI_FONT_FAMILY,
-		fontWeight: '600',
+		fontWeight: '400',
 		fontSize: UI_BASE_FONT_SIZE * 0.8,
 		fill: UI_GOLD,
 	} as const;
 
 	const valueStyle = {
 		fontFamily: UI_FONT_FAMILY,
-		fontWeight: '600',
+		fontWeight: '400',
 		fontSize: UI_BASE_FONT_SIZE,
 		fill: 0xfaf3e0,
 	} as const;

@@ -18,7 +18,7 @@
 	import { waitForTimeout } from 'utils-shared/wait';
 
 	import { getContext } from '../game/context';
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { SYMBOL_SIZE, GAME_FONT } from '../game/constants';
 
 	const context = getContext();
 	const PLATES = {
@@ -78,7 +78,7 @@
 				<Text
 					anchor={0.5}
 					text={title}
-					style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.5, fontWeight: '700', fill: 0xf2d692, letterSpacing: 4 }}
+					style={{ fontFamily: GAME_FONT, fontSize: SYMBOL_SIZE * 0.5, fontWeight: '400', fill: 0xf2d692, letterSpacing: 4 }}
 				/>
 			{/if}
 			{#if subtitle}
@@ -87,9 +87,9 @@
 					y={SYMBOL_SIZE * 0.85}
 					text={subtitle}
 					style={{
-						fontFamily: 'Georgia, serif',
+						fontFamily: GAME_FONT,
 						fontSize: SYMBOL_SIZE * 0.3,
-						fontWeight: '700',
+						fontWeight: '400',
 						fill: 0xece5d8,
 						dropShadow: { color: 0x000000, blur: 6, distance: 0, alpha: 0.9 },
 					}}

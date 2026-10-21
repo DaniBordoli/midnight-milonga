@@ -14,7 +14,7 @@
 	import { FadeContainer } from 'components-pixi';
 
 	import { getContext } from '../game/context';
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { SYMBOL_SIZE, GAME_FONT } from '../game/constants';
 
 	// Compás: free-spin multiplier shown as a metronome left of the board. The pendulum swings faster as
 	// the Compás grows and the number pops when it increases.
@@ -66,9 +66,9 @@
 			scale={pop.current}
 			text={`x${value}`}
 			style={{
-				fontFamily: 'Georgia, serif',
+				fontFamily: GAME_FONT,
 				fontSize: SYMBOL_SIZE * 0.36,
-				fontWeight: '700',
+				fontWeight: '400',
 				fill: 0x2a1408,
 				stroke: { color: 0xf2d692, width: 2 },
 			}}

@@ -31,7 +31,7 @@
 							text={i18nDerived.stop()}
 							style={{
 								fontFamily: UI_FONT_FAMILY,
-								fontWeight: '700',
+								fontWeight: '400',
 								fontSize: UI_BASE_FONT_SIZE * 0.6,
 								fill: UI_GOLD,
 							}}

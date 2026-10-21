@@ -4,6 +4,8 @@
 	import { Text, REM } from 'pixi-svelte';
 	import { WHITE } from 'constants-shared/colors';
 
+	import { UI_FONT_FAMILY } from '../constants';
+
 	type Props = {
 		name: string;
 	};
@@ -19,9 +21,9 @@
 	);
 	const textProps = {
 		style: {
-			fontFamily: 'proxima-nova',
+			fontFamily: UI_FONT_FAMILY,
 			fontSize: REM * 1.5,
-			fontWeight: '600',
+			fontWeight: '400',
 			lineHeight: REM * 2,
 			fill: WHITE,
 		},

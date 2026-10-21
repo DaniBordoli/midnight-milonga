@@ -66,8 +66,8 @@
 					wordWrap: true,
 					wordWrapWidth: width * 0.7,
 					fontFamily: UI_FONT_FAMILY,
-					fontWeight: '600',
-					fontSize: UI_BASE_FONT_SIZE * 0.62,
+					fontWeight: '400',
+					fontSize: UI_BASE_FONT_SIZE * 0.46,
 					fill: UI_GOLD,
 				}}
 			/>

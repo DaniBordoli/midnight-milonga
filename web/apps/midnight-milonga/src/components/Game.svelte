@@ -11,6 +11,7 @@
 	import { GameVersion, Modals } from 'components-ui-html';
 
 	import { getContext } from '../game/context';
+	import { GAME_FONT } from '../game/constants';
 	import EnableSound from './EnableSound.svelte';
 	import EnableGameActor from './EnableGameActor.svelte';
 	import ResumeBet from './ResumeBet.svelte';
@@ -83,9 +84,9 @@
 					y={context.stateLayoutDerived.layoutType() === 'portrait' ? REM * 2 : 0}
 					text="PAMPA PLAY"
 					style={{
-						fontFamily: 'proxima-nova',
+						fontFamily: GAME_FONT,
 						fontSize: REM * 1.5,
-						fontWeight: '600',
+						fontWeight: '400',
 						lineHeight: REM * 2,
 						fill: 0xffffff,
 					}}

@@ -6,7 +6,8 @@ export const UI_BASE_FONT_SIZE = UI_BASE_SIZE * 0.3;
 
 // Midnight Milonga skin
 export const UI_GOLD = 0xf2d692;
-export const UI_FONT_FAMILY = 'proxima-nova';
+// Limelight is declared by the game (apps/midnight-milonga/src/fonts.css); single weight, no bold
+export const UI_FONT_FAMILY = 'Limelight, Georgia, serif';
 
 export const UI_TEXT_STYLES = {
 	labelStyle: {
