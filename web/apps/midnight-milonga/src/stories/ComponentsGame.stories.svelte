@@ -94,3 +94,20 @@
 	})}
 	{template}
 />
+
+<Story
+	name="emitterEvent: win tiers"
+	args={templateArgs({
+		skipLoadingScreen: true,
+		data: {},
+		action: async () => {
+			// big, super, mega, epic, max
+			for (const level of [6, 7, 8, 9, 10] as const) {
+				eventEmitter.broadcast({ type: 'winShow' });
+				await eventEmitter.broadcastAsync({ type: 'winUpdate', amount: 2000 * level, winLevelData: winLevelMap[level] });
+				eventEmitter.broadcast({ type: 'winHide' });
+			}
+		},
+	})}
+	{template}
+/>

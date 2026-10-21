@@ -14,16 +14,23 @@
 		children: Snippet;
 	};
 
-	// Big win: title plate popping in over pulsing gold sparkles, amount underneath.
-	// Only the "BIG WIN" plate exists for now, so higher tiers reuse it a bit larger.
+	// Big win: the tier's title plate popping in over pulsing gold sparkles, amount underneath.
 	const props: Props = $props();
-	const tier = $derived(['big', 'super', 'mega', 'epic', 'max'].findIndex((t) => props.animationMap.intro.startsWith(t)));
-	const PLATE = { width: SYMBOL_SIZE * 4.6, height: SYMBOL_SIZE * 4.6 * (307 / 910) };
+	// key and width/height ratio of each tier's plate image
+	const PLATES = [
+		{ tier: 'big', key: 'fxBigWin', ratio: 307 / 910 },
+		{ tier: 'super', key: 'fxSuperWin', ratio: 282 / 975 },
+		{ tier: 'mega', key: 'fxMegaWin', ratio: 302 / 975 },
+		{ tier: 'epic', key: 'fxEpicWin', ratio: 301 / 975 },
+		{ tier: 'max', key: 'fxMaxWin', ratio: 335 / 1003 },
+	];
+	const plate = $derived(PLATES.find((p) => props.animationMap.intro.startsWith(p.tier)) ?? PLATES[0]);
+	const PLATE_WIDTH = SYMBOL_SIZE * 4.6;
 
 	const pop = new Tween(0.3, { duration: 550, easing: backOut });
 	let pulse = $state(0);
 	const timer = setInterval(() => (pulse += 0.08), 16);
-	onMount(() => pop.set(1 + Math.max(tier, 0) * 0.06));
+	onMount(() => pop.set(1));
 	onDestroy(() => clearInterval(timer));
 </script>
 
@@ -37,7 +44,7 @@
 		rotation={pulse * 0.05}
 		blendMode="add"
 	/>
-	<Sprite key="fxBigWin" anchor={0.5} {...PLATE} />
+	<Sprite key={plate.key} anchor={0.5} width={PLATE_WIDTH} height={PLATE_WIDTH * plate.ratio} />
 </Container>
 <Container y={SYMBOL_SIZE * 0.85}>
 	{@render props.children()}
