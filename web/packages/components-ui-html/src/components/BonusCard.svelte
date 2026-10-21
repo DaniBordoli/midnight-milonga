@@ -6,12 +6,16 @@
 		description: Snippet;
 		price: Snippet;
 		button: Snippet;
+		image?: string;
 	};
 
 	const props: Props = $props();
 </script>
 
 <div class="bonus-card-wrap">
+	{#if props.image}
+		<img class="image" src={props.image} alt="" draggable="false" />
+	{/if}
 	<div class="info">
 		{@render props.title()}
 		{@render props.description()}
@@ -34,6 +38,15 @@
 		min-width: 155px;
 		max-width: 180px;
 		gap: 0.5rem;
+	}
+
+	.image {
+		display: block;
+		width: 100%;
+		aspect-ratio: 9 / 5;
+		object-fit: cover;
+		border-radius: 4px;
+		border: var(--mm-border);
 	}
 
 	.info {
