@@ -71,8 +71,8 @@ export const SPIN_OPTIONS_FAST = {
 export const MOTION_BLUR_VELOCITY = 31;
 
 // win amounts (replaces the sample "gold" bitmap font)
-// Limelight is bundled (src/fonts.css); Georgia only shows if it ever failed to load
-export const GAME_FONT = 'Limelight, Georgia, serif';
+// Federo is bundled (src/fonts.css); Georgia only shows if it ever failed to load
+export const GAME_FONT = 'Federo, Georgia, serif';
 
 export const WIN_TEXT_STYLE = {
 	fontFamily: GAME_FONT,
