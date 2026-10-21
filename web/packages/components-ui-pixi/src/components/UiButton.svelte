@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Sprite, Text } from 'pixi-svelte';
+	import { Rectangle, Sprite, Text } from 'pixi-svelte';
 	import { Button, type ButtonProps } from 'components-pixi';
 
 	import type { ButtonIcon } from '../types';
@@ -36,15 +36,27 @@
 		{@const alpha = buttonProps.disabled ? 0.45 : 1}
 		{@const { width, height } = buttonProps.sizes}
 		{#if iconKey}
+			<!-- active (turbo / auto spin on): a gold halo behind the button and a fully lit icon; off: a dimmer icon -->
+			{#if active}
+				<Rectangle
+					{...center}
+					anchor={0.5}
+					width={width * 1.3 * scale}
+					height={height * 1.3 * scale}
+					borderRadius={width * 0.65 * scale}
+					backgroundColor={UI_GOLD}
+					alpha={0.3 * alpha}
+					blendMode="add"
+				/>
+			{/if}
 			<Sprite key="uiButtonSmall" {...center} anchor={0.5} width={width * scale} height={height * scale} {alpha} />
-			<!-- active (turbo / auto spin on): the icon lights up -->
 			<Sprite
 				key={iconKey}
 				{...center}
 				anchor={0.5}
 				scale={(width * 0.42 * scale) / 128}
-				tint={active ? 0xfff2c2 : 0xffffff}
-				alpha={alpha * (active ? 1 : 0.9)}
+				tint={active ? 0xffe27a : 0xb8a67e}
+				alpha={alpha}
 			/>
 		{:else}
 			<Sprite
