@@ -15,7 +15,10 @@
 	// Art-deco frame (transparent center) over a dark backing; during free spins a gold border pulses
 	// around the board (replaces the sample "reelhouse" spine glow).
 	const context = getContext();
-	const FRAME_SCALE = 1.14;
+	// the frame art's opening is 74% x 69% of the image: scale it so the opening clears the whole board
+	const FRAME_SCALE = { x: 1.4, y: 1.5 };
+	// free-spin glow hugs the symbols inside the opening
+	const GLOW_SCALE = 1.03;
 	const board = $derived(context.stateGameDerived.boardLayout());
 
 	const glow = new Tween(0, { duration: 400 });
@@ -40,10 +43,10 @@
 
 {#if glow.current > 0}
 	<Rectangle
-		x={board.x - (board.width * FRAME_SCALE) / 2}
-		y={board.y - (board.height * FRAME_SCALE) / 2}
-		width={board.width * FRAME_SCALE}
-		height={board.height * FRAME_SCALE}
+		x={board.x - (board.width * GLOW_SCALE) / 2}
+		y={board.y - (board.height * GLOW_SCALE) / 2}
+		width={board.width * GLOW_SCALE}
+		height={board.height * GLOW_SCALE}
 		backgroundAlpha={0}
 		borderColor={0xf2d692}
 		borderWidth={10}
@@ -58,6 +61,6 @@
 	anchor={0.5}
 	x={board.x}
 	y={board.y}
-	width={board.width * FRAME_SCALE}
-	height={board.height * FRAME_SCALE}
+	width={board.width * FRAME_SCALE.x}
+	height={board.height * FRAME_SCALE.y}
 />

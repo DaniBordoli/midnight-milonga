@@ -22,7 +22,7 @@
 	const BODY = { width: SYMBOL_SIZE * 1.3, height: SYMBOL_SIZE * 1.3 * (768 / 416) };
 	const PENDULUM = { width: BODY.height * 0.72 * (47 / 768), height: BODY.height * 0.72 };
 	const position = $derived({
-		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width / 2 - SYMBOL_SIZE * 1.35,
+		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width / 2 - SYMBOL_SIZE * 1.85, // clear of the frame's side ornaments
 		// below the free-spin counter, which sits at the board's top-left
 		y: context.stateGameDerived.boardLayout().y + SYMBOL_SIZE * 0.95,
 	});

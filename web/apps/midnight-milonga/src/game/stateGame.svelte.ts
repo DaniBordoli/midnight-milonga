@@ -82,7 +82,7 @@ export const stateGame = $state({
 // the 4-row board is taller than the 3-row sample, so it sits higher to clear the bottom UI bar
 const boardLayout = () => ({
 	x: stateLayoutDerived.mainLayout().width * 0.5,
-	y: stateLayoutDerived.mainLayout().height * 0.43,
+	y: stateLayoutDerived.mainLayout().height * 0.42,
 	anchor: { x: 0.5, y: 0.5 },
 	pivot: { x: BOARD_SIZES.width / 2, y: BOARD_SIZES.height / 2 },
 	...BOARD_SIZES,

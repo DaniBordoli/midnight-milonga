@@ -84,15 +84,15 @@
 			<Sprite key="fxSpinsPlate" anchor={0.5} y={SYMBOL_SIZE * 0.25} width={SYMBOL_SIZE * 2.4} height={SYMBOL_SIZE * 2.4 * (768 / 726)} />
 			<Text
 				anchor={0.5}
-				y={SYMBOL_SIZE * 0.05}
+				y={SYMBOL_SIZE * -0.05}
 				text={String(spins)}
-				style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.95, fontWeight: '700', fill: 0xf2d692 }}
+				style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.85, fontWeight: '700', fill: 0xf2d692 }}
 			/>
 			<Text
 				anchor={0.5}
-				y={SYMBOL_SIZE * 0.85}
+				y={SYMBOL_SIZE * 0.62}
 				text="FREE SPINS"
-				style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.24, fontWeight: '700', fill: 0xece5d8, letterSpacing: 3 }}
+				style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.17, fontWeight: '700', fill: 0xece5d8, letterSpacing: 1 }}
 			/>
 			{#if isSuper}
 				<Text
