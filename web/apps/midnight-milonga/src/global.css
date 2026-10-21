@@ -18,3 +18,13 @@
 	font-weight: 400;
 	src: url('./fonts/Federo-Regular.ttf') format('truetype');
 }
+
+/* No double-tap zoom or browser panning on the game (Stake guideline 223); the viewport meta covers iOS. */
+html,
+body {
+	touch-action: none;
+}
+/* Pixi sets an inline touch-action on its canvas */
+canvas {
+	touch-action: none !important;
+}

@@ -53,7 +53,7 @@
 				: ''),
 	);
 	const payoutLine = $derived(
-		replayBet?.payoutMultiplier !== undefined && phase === 'done' ? `PAYOUT x${Number(replayBet.payoutMultiplier.toFixed(2))}` : '',
+		replayBet?.payoutMultiplier !== undefined && phase === 'done' ? `${stateUrlDerived.social() ? 'WIN' : 'PAYOUT'} x${Number(replayBet.payoutMultiplier.toFixed(2))}` : '',
 	);
 
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());

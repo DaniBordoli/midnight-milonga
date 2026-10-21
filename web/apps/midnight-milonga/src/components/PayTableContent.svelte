@@ -42,7 +42,7 @@
 </script>
 
 <div class="paytable">
-	<h2>PAYTABLE</h2>
+	<h2>{social ? 'WIN TABLE' : 'PAYTABLE'}</h2>
 	<p>
 		Values are multiples of the total {amountWord}, per way. Wins {social ? 'count' : 'pay'} left to right on adjacent
 		reels, starting from the leftmost reel, for 3 or more matching symbols.

@@ -66,6 +66,9 @@
 				stateConfig.betMenuOptions = stateConfig.betAmountOptions.filter((_, index) =>
 					MOST_USED_BET_INDEXES.includes(index),
 				);
+				// open on the RGS default stake; an active round below overrides it with the round's amount
+				const defaultBetLevel = authenticateData.config?.defaultBetLevel;
+				if (defaultBetLevel) stateBet.betAmount = defaultBetLevel / API_AMOUNT_MULTIPLIER;
 			}
 
 			// round
@@ -102,13 +105,21 @@
 			}
 		} catch (error) {
 			console.error(error);
-			stateModal.modal = { name: 'error', error };
+			// an RGS error ({ error, message }) is shown as is; a network failure (bad rgs_url, offline) gets a
+			// message the player can act on instead of "TypeError: Failed to fetch"
+			const rgsError = error && typeof error === 'object' && 'error' in error;
+			stateModal.modal = {
+				name: 'error',
+				error: rgsError
+					? error
+					: { error: 'CONNECTION_ERROR', message: 'Could not connect to the game server. Please reload the game to try again.' },
+			};
 		}
 	};
 
 	// a currency code the browser can format (or the social-casino coins the amount helpers special-case)
 	const isUsableCurrency = (code: string) => {
-		if (['XGC', 'XSC'].includes(code)) return true;
+		if (['XGC', 'XSC', 'XEC'].includes(code)) return true;
 		try {
 			new Intl.NumberFormat('en', { style: 'currency', currency: code });
 			return true;

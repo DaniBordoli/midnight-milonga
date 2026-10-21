@@ -105,7 +105,10 @@
 		<li><strong>{t('BUY BONUS', 'PLAY BONUS')}:</strong> opens the game modes. Every option asks for confirmation.</li>
 		<li><strong>AUTO SPIN:</strong> plays several spins in a row after you confirm the settings.</li>
 		<li><strong>TURBO:</strong> faster spins and animations.</li>
-		<li><strong>MENU:</strong> paytable, game rules, settings and sound on/off.</li>
+		<li><strong>MENU:</strong> opens {t('PAYTABLE', 'WIN TABLE')}, INFO (these rules), SETTINGS and SOUND ON / OFF; EXIT closes it.</li>
+		<li><strong>SOUND ON / OFF:</strong> mutes or restores all music and effects.</li>
+		<li><strong>SETTINGS:</strong> music and effects volume.</li>
+		<li><strong>Replays:</strong> PLAY starts the recorded round and PLAY AGAIN watches it again. Replays are watch-only.</li>
 	</ul>
 
 	<h3>GENERAL DISCLAIMER</h3>

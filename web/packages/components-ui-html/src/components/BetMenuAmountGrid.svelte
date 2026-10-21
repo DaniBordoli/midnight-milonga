@@ -2,6 +2,7 @@
 	import { OptionsGrid } from 'components-shared';
 	import { getContextLayout } from 'utils-layout';
 	import { stateBet, stateConfig } from 'state-shared';
+	import { currencyDecimals } from 'utils-shared/amount';
 
 	import BaseIcon from './BaseIcon.svelte';
 	import BaseButtonContent from './BaseButtonContent.svelte';
@@ -24,7 +25,7 @@
 		if (Math.abs(value) > 999) {
 			return `${(Math.abs(value) / 1000).toFixed(2)}K`;
 		}
-		return Math.abs(value).toFixed(2);
+		return Math.abs(value).toFixed(currencyDecimals());
 	};
 </script>
 

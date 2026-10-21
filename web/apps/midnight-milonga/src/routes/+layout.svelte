@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../fonts.css';
+	import '../global.css';
 	import { type Snippet } from 'svelte';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';

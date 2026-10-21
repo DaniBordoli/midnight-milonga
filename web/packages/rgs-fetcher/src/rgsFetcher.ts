@@ -1,12 +1,13 @@
 import type { paths } from './schema';
 import { fetcher } from 'utils-fetcher';
 
-// Engine always passes rgs_url without a scheme. Only the local dev server may point at a mock RGS with an
-// explicit http:// URL (used to test replays); the published build always calls https.
-const rgsBase = (rgsUrl: string) =>
-	(import.meta as unknown as { env?: { DEV?: boolean } }).env?.DEV && /^https?:\/\//.test(rgsUrl)
-		? rgsUrl
-		: `https://${rgsUrl}`;
+// rgs_url normally arrives as a bare host and gets https:// added; a URL that already carries https:// is used
+// as is. Only the local dev server also accepts http:// (a mock RGS for testing replays).
+const rgsBase = (rgsUrl: string) => {
+	if (/^https:\/\//i.test(rgsUrl)) return rgsUrl.replace(/\/+$/, '');
+	if ((import.meta as unknown as { env?: { DEV?: boolean } }).env?.DEV && /^http:\/\//i.test(rgsUrl)) return rgsUrl;
+	return `https://${rgsUrl}`;
+};
 
 export const rgsFetcher = {
 	post: async function post<
