@@ -56,6 +56,7 @@ export default {
 	fxTandaBg: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/tanda_bg.webp', import.meta.url).href },
 	fxTandaCouple: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/tanda_couple.webp', import.meta.url).href },
 	// UI skin (tools/process_ui_art.py), used by the components-ui-pixi buttons and labels
+	uiPampaPlayLogo: { type: 'sprite', src: new URL('../../assets/sprites/milonga/ui/pampa_play_logo.webp', import.meta.url).href, preload: true },
 	uiPanel: { type: 'sprite', src: new URL('../../assets/sprites/milonga/ui/panel.webp', import.meta.url).href, preload: true },
 	uiButtonSpin: { type: 'sprite', src: new URL('../../assets/sprites/milonga/ui/button_spin.webp', import.meta.url).href, preload: true },
 	uiButtonSmall: { type: 'sprite', src: new URL('../../assets/sprites/milonga/ui/button_small.webp', import.meta.url).href, preload: true },

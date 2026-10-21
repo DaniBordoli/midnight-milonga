@@ -1,13 +1,16 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { SvelteDate } from 'svelte/reactivity';
 
-	import { Text, REM } from 'pixi-svelte';
+	import { Container, Text, REM } from 'pixi-svelte';
 	import { WHITE } from 'constants-shared/colors';
 
 	import { UI_FONT_FAMILY } from '../constants';
 
 	type Props = {
-		name: string;
+		name?: string;
+		// drawn after the clock in place of the name (e.g. the game logo)
+		children?: Snippet;
 	};
 
 	const props: Props = $props();
@@ -43,4 +46,10 @@
 </script>
 
 <Text text={clock} onresize={(value) => (clockSizes = value)} {...textProps} />
-<Text text={props.name} x={clockSizes.width + 5} {...textProps} />
+{#if props.children}
+	<Container x={clockSizes.width + REM * 0.75}>
+		{@render props.children()}
+	</Container>
+{:else}
+	<Text text={props.name ?? ''} x={clockSizes.width + 5} {...textProps} />
+{/if}
