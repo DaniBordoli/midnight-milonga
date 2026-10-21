@@ -1,0 +1,12 @@
+/* The SDK UI asks for "proxima-nova" (an Adobe Typekit font). External fonts are not allowed,
+   so the name points at fonts already installed on the player's device. */
+@font-face {
+	font-family: 'proxima-nova';
+	font-weight: 100 500;
+	src: local('Segoe UI'), local('Helvetica Neue'), local('Roboto'), local('Arial');
+}
+@font-face {
+	font-family: 'proxima-nova';
+	font-weight: 600 900;
+	src: local('Segoe UI Semibold'), local('HelveticaNeue-Bold'), local('Roboto Bold'), local('Arial Bold');
+}
