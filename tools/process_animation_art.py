@@ -141,6 +141,18 @@ def key_black(img, floor=16, gain=5):
     return out.crop(alpha.getbbox())
 
 
+def black_to_alpha(img, floor=6, gain=3):
+    """Glow art on black, drawn additively: also make black transparent so no renderer can show the
+    black square (seen in Chrome as a light box behind the sparkles). Keeps the canvas size (no crop)."""
+    rgb = img.convert("RGB")
+    alpha = Image.fromarray(np.asarray(rgb).max(axis=2).astype(np.uint8)).point(
+        lambda v: 0 if v < floor else min(255, (v - floor) * gain)
+    )
+    out = rgb.convert("RGBA")
+    out.putalpha(alpha)
+    return out
+
+
 def petal_sheet(petals, out_dir, max_side=160):
     """Split the keyed petals image into separate frames and write a Pixi spritesheet (same format as the
     sample coin sheet: frames 1.png..N.png and an animation named "coin", so the particle emitter can use it)."""
@@ -195,7 +207,7 @@ def main(src):
         if mode == "key":
             fit(key_green(img, beam=name in BEAM_ART), max_side).save(os.path.join(OUT, f"{name}.png"), optimize=True)
         elif mode == "add":
-            fit(img.convert("RGB"), max_side).save(os.path.join(OUT, f"{name}.png"), optimize=True)
+            fit(black_to_alpha(img), max_side).save(os.path.join(OUT, f"{name}.png"), optimize=True)
         else:
             fit(img.convert("RGB"), max_side).save(os.path.join(OUT, f"{name}.jpg"), quality=86)
         print("ok", name)
