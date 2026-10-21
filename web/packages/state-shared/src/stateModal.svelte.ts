@@ -38,6 +38,11 @@ type ModalSettings = {
 	name: 'settings';
 };
 
+// a bet pressed without enough balance (Stake guideline 222: the player must be told why nothing happens)
+type ModalInsufficientFunds = {
+	name: 'insufficientFunds';
+};
+
 type Modal =
 	| ModalEmpty
 	| ModalError
@@ -48,7 +53,8 @@ type Modal =
 	| ModalAutoSpinMessage
 	| ModalPayTable
 	| ModalGameRules
-	| ModalSettings;
+	| ModalSettings
+	| ModalInsufficientFunds;
 
 export const stateModal = $state({
 	modal: null as Modal,

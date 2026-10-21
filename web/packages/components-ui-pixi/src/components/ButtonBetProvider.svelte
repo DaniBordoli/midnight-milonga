@@ -5,7 +5,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { stateBet, stateBetDerived } from 'state-shared';
+	import { stateBet, stateBetDerived, stateModal } from 'state-shared';
 
 	import { getContext } from '../context';
 
@@ -41,7 +41,9 @@
 		context.eventEmitter.broadcast({ type: 'soundPressBet' });
 
 		if (context.stateXstateDerived.isIdle()) {
-			bet();
+			// not enough balance: no play request goes out, and the player is told why
+			if (!stateBetDerived.isBetCostAvailable()) stateModal.modal = { name: 'insufficientFunds' };
+			else bet();
 		} else {
 			stop();
 		}
