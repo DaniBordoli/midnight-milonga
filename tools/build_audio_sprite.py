@@ -26,6 +26,8 @@ MUSIC = {
 WIN_BEDS = ["bgm_winlevel_big", "bgm_winlevel_superwin", "bgm_winlevel_mega", "bgm_winlevel_epic", "bgm_winlevel_max"]
 # playback volume per sound (sounds.json config, applied by the SDK player); everything else plays at 1
 VOLUME = {"bgm_main": 0.45}
+# TEMPORARY: music muted while testing (2026-10-21); delete this block to bring it back before submitting
+VOLUME.update({key: 0 for key in ["bgm_main", "bgm_freespin"] + WIN_BEDS})
 LOOPED = set(MUSIC) | set(WIN_BEDS) | {"sfx_bigwin_coinloop"}
 
 

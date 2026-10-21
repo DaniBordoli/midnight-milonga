@@ -119,25 +119,25 @@
 	},
 	"config": {
 		"bgm_freespin": {
-			"volume": 1
+			"volume": 0
 		},
 		"bgm_main": {
-			"volume": 0.45
+			"volume": 0
 		},
 		"bgm_winlevel_big": {
-			"volume": 1
+			"volume": 0
 		},
 		"bgm_winlevel_epic": {
-			"volume": 1
+			"volume": 0
 		},
 		"bgm_winlevel_max": {
-			"volume": 1
+			"volume": 0
 		},
 		"bgm_winlevel_mega": {
-			"volume": 1
+			"volume": 0
 		},
 		"bgm_winlevel_superwin": {
-			"volume": 1
+			"volume": 0
 		},
 		"jng_intro_fs": {
 			"volume": 1
