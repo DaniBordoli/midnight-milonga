@@ -102,6 +102,98 @@ def winlevel_small():
     return first + second
 
 
+def at(x, seconds, length):
+    """Place x starting at `seconds` inside a silent buffer of `length` seconds."""
+    out = np.zeros(int(RATE * length))
+    start = int(RATE * seconds)
+    end = min(len(out), start + len(x))
+    out[start:end] += x[: end - start]
+    return out
+
+
+# A minor / E7 voicings used by the tango-flavoured stingers
+A_MINOR = [220.0, 261.63, 329.63, 440.0]
+E7 = [164.81, 207.65, 246.94, 293.66]
+
+
+def chord(freqs, seconds, decay=0.6):
+    return sum(piano(f, seconds, decay) for f in freqs)
+
+
+def reed_chord(freqs, seconds):
+    tt = t(seconds)
+    swell = np.minimum(1, tt / 0.08) * np.exp(-tt / (seconds * 0.6))
+    return sum(reed(f, seconds) for f in freqs) * swell
+
+
+def jingle_intro():
+    # rising bandoneon arpeggio landing on A minor
+    notes = [220.0, 261.63, 329.63, 440.0]
+    out = sum(at(reed_chord([f], 0.5), i * 0.16, 2.0) for i, f in enumerate(notes))
+    return out + at(reed_chord(A_MINOR, 1.4), 0.64, 2.0) * 0.8
+
+
+def superfreespin():
+    hit = chord(A_MINOR + [110.0], 4.0, 0.9)
+    run = sum(at(bell(880 * 2 ** (i / 12), 1.2), 0.4 + i * 0.07, 4.0) for i in range(0, 13, 2))
+    return hit + run * 0.5 + at(reed_chord(A_MINOR, 2.5), 1.3, 4.0) * 0.6
+
+
+def scatter_win():
+    return sum(at(bell(f, 2.5), i * 0.12, 3.0) for i, f in enumerate([1318.5, 1567.98, 1975.5, 2637.0]))
+
+
+def youwon_panel():
+    return at(chord(E7, 1.0, 0.5), 0, 3.0) + at(chord(A_MINOR, 2.2, 0.9), 0.55, 3.0) * 1.2
+
+
+def winlevel_end():
+    return chord([220.0, 329.63, 440.0, 523.25], 2.0, 0.7)
+
+
+def bigwin_loop():
+    # seamless loop of tiny golden chimes: events wrap around the loop end
+    length = 10.0
+    out = np.zeros(int(RATE * length))
+    pentatonic = [1760.0, 1975.5, 2217.5, 2637.0, 2960.0]
+    for i in range(70):
+        note = bell(pentatonic[rng.integers(len(pentatonic))], 0.6) * rng.uniform(0.2, 0.5)
+        start = rng.integers(len(out))
+        idx = (start + np.arange(len(note))) % len(out)
+        np.add.at(out, idx, note)
+    return out
+
+
+def wild_explode():
+    swell = reed_chord([329.63, 440.0, 523.25], 1.5)
+    sparkle = sum(at(bell(f, 0.8), 0.45 + i * 0.05, 1.5) for i, f in enumerate([1760.0, 2217.5, 2637.0]))
+    return swell + sparkle * 0.6
+
+
+def multiplier_landing():
+    noise = lowpass(rng.standard_normal(int(RATE * 1.0)), 1500)
+    whoosh = noise * np.sin(np.pi * np.clip(t(1.0) / 0.35, 0, 1)) ** 2 * (t(1.0) < 0.35)
+    return whoosh * 0.5 + at(bell(1318.5, 0.7) + bell(1975.5, 0.7) * 0.5, 0.3, 1.0)
+
+
+def multiplier_update():
+    tick = reel_stop()[: int(RATE * 0.06)]
+    out = sum(at(tick, s, 1.5) for s in [0, 0.22, 0.4, 0.54, 0.65])
+    return out * 0.7 + at(piano(880.0, 0.8), 0.72, 1.5)
+
+
+def anticipation():
+    # tremolo reed with a slowly rising pitch and a heartbeat pulse underneath
+    length = 7.0
+    tt = t(length)
+    freq = 110 * 2 ** (tt / length)
+    phase = 2 * np.pi * np.cumsum(freq) / RATE
+    tone = sum(np.sin(phase * h) / h for h in range(1, 8))
+    tremolo = 0.6 + 0.4 * np.sin(2 * np.pi * 9 * tt)
+    beat = sum(at(env(np.sin(2 * np.pi * 55 * t(0.2)), 0.002, 0.06), s, length) for s in np.arange(0, length, 0.55))
+    return lowpass(tone, 1800) * tremolo * np.minimum(1, tt / 1.5) + beat * 0.8
+
+
 def write(path, x, peak=0.85):
     x = x / max(1e-9, np.abs(x).max()) * peak
     fade = min(len(x), int(RATE * 0.005))
@@ -122,6 +214,16 @@ def main(out):
         "sfx_btn_spin": (btn_spin(), 0.7),
         "sfx_reel_stop_1": (reel_stop(), 0.8),
         "sfx_winlevel_small": (winlevel_small(), 0.7),
+        "jng_intro_fs": (jingle_intro(), 0.75),
+        "sfx_superfreespin": (superfreespin(), 0.8),
+        "sfx_scatter_win_v2": (scatter_win(), 0.7),
+        "sfx_youwon_panel": (youwon_panel(), 0.75),
+        "sfx_winlevel_end": (winlevel_end(), 0.6),
+        "sfx_bigwin_coinloop": (bigwin_loop(), 0.4),
+        "sfx_wild_explode": (wild_explode(), 0.75),
+        "sfx_multiplier_landing": (multiplier_landing(), 0.7),
+        "sfx_multiplier_update": (multiplier_update(), 0.7),
+        "sfx_anticipation": (anticipation(), 0.6),
     }
     for step in range(1, 6):
         sounds[f"sfx_scatter_stop_{step}"] = (scatter_stop(step), 0.7)
