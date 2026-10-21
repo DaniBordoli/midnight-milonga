@@ -1,12 +1,4 @@
 export default {
-	explosion: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/symbols3/symbols3.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/symbols3/explosion.json', import.meta.url).href,
-			scale: 2,
-		},
-	},
 	coins: {
 		type: 'spriteSheet',
 		// rose petals replace the sample coins (same spritesheet format, see tools/process_animation_art.py)

@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { GAME_FONT } from '../game/constants';
-	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
 	import { getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
-	import { getContext } from '../game/context';
 	import { BitmapText } from 'pixi-svelte';
 
 	type Props = {
@@ -17,30 +15,11 @@
 	};
 
 	const props: Props = $props();
-	const context = getContext();
 	const symbolInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: props.state }));
-	const isSprite = $derived(symbolInfo.type === 'sprite');
 </script>
 
-{#if isSprite}
-	<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
-{:else}
-	<SymbolSpine
-		loop={props.loop}
-		{symbolInfo}
-		x={props.x}
-		y={props.y}
-		showWinFrame={props.state === 'win' && !['S', 'M'].includes(props.rawSymbol.name)}
-		listener={{
-			complete: props.oncomplete,
-			event: (_, event) => {
-				if (event.data?.name === 'wildExplode') {
-					context.eventEmitter?.broadcast({ type: 'soundOnce', name: 'sfx_wild_explode' });
-				}
-			},
-		}}
-	/>
-{/if}
+<!-- every Midnight Milonga symbol state is a sprite (no spine animations) -->
+<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
 
 {#if props.rawSymbol.multiplier}
 	<BitmapText

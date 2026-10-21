@@ -91,18 +91,12 @@ export const zIndexes = {
 	},
 };
 
-const explosion = {
-	type: 'spine',
-	assetKey: 'explosion',
-	animationName: 'explosion',
-	sizeRatios: { width: 1, height: 1 },
-};
-
 // placeholder art cut from the concept images: every state is a sprite, winning symbols switch to the lit variant
 const milongaSymbol = (key: string, size = 0.94) => {
 	const normal = { type: 'sprite', assetKey: key, sizeRatios: { width: size, height: size } } as const;
 	const lit = { type: 'sprite', assetKey: `${key}Win`, sizeRatios: { width: size, height: size } } as const;
-	return { explosion, static: normal, spin: normal, land: normal, win: lit, postWinStatic: lit };
+	// 'explosion' is a state the SDK board knows but this game never sets; it shows the plain symbol
+	return { explosion: normal, static: normal, spin: normal, land: normal, win: lit, postWinStatic: lit };
 };
 
 export const SYMBOL_INFO_MAP = {
