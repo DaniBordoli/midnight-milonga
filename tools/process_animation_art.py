@@ -6,7 +6,7 @@ Usage (from the repo root):
 - "key": plain chroma-green background (#00B140) removed, green spill corrected, cropped to content.
 - "add": glow art on pure black, kept as is (drawn with additive blending, black disappears).
 - "opaque": full backgrounds, resized only.
-Writes web/apps/midnight-milonga/static/assets/sprites/milonga/fx/<name>.png|jpg
+Writes web/apps/midnight-milonga/static/assets/sprites/milonga/fx/<name>.webp
 """
 
 import json
@@ -184,15 +184,22 @@ def petal_sheet(petals, out_dir, max_side=160):
             "sourceSize": {"w": f.width, "h": f.height},
         }
         x += f.width + 2
-    sheet.save(os.path.join(out_dir, "petals_sheet.png"), optimize=True)
+    save_sprite(sheet, "petals_sheet", out_dir)
     data = {
         "frames": meta,
         "animations": {"coin": list(meta)},
-        "meta": {"image": "petals_sheet.png", "format": "RGBA8888", "size": {"w": sheet.width, "h": sheet.height}, "scale": "1"},
+        "meta": {"image": "petals_sheet.webp", "format": "RGBA8888", "size": {"w": sheet.width, "h": sheet.height}, "scale": "1"},
     }
     with open(os.path.join(out_dir, "petals_sheet.json"), "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=1)
     return len(frames)
+
+
+def save_sprite(img, name, out_dir=OUT):
+    """Every game sprite ships as WebP (Stake rates bundle size): lossy with alpha, about a fifth of a PNG."""
+    path = os.path.join(out_dir, f"{name}.webp")
+    img.save(path, "WEBP", quality=88, method=6)
+    return path
 
 
 def fit(img, max_side):
@@ -205,19 +212,23 @@ def main(src):
     for name, (prefix, start, mode, max_side) in ART.items():
         img = Image.open(find(src, prefix, start))
         if mode == "key":
-            fit(key_green(img, beam=name in BEAM_ART), max_side).save(os.path.join(OUT, f"{name}.png"), optimize=True)
+            save_sprite(fit(key_green(img, beam=name in BEAM_ART), max_side), name)
         elif mode == "add":
-            fit(black_to_alpha(img), max_side).save(os.path.join(OUT, f"{name}.png"), optimize=True)
+            save_sprite(fit(black_to_alpha(img), max_side), name)
         else:
-            fit(img.convert("RGB"), max_side).save(os.path.join(OUT, f"{name}.jpg"), quality=86)
+            save_sprite(fit(img.convert("RGB"), max_side), name)
         print("ok", name)
 
-    petals = Image.open(os.path.join(OUT, "petals.png")).convert("RGBA")
+    # petals.webp is only the input of the particle sheet
+    petals_path = os.path.join(OUT, "petals.webp")
+    with Image.open(petals_path) as im:
+        petals = im.convert("RGBA")
     print("petal frames:", petal_sheet(petals, OUT))
+    os.remove(petals_path)
 
     # game title from the concept art folder next to "para animaciones"
     title = Image.open(os.path.join(src, "..", "3. Arte Midnight Milonga", "logo.jpg"))
-    fit(key_black(title), 1400).save(os.path.join(OUT, "title.png"), optimize=True)
+    save_sprite(fit(key_black(title), 1400), "title")
     print("ok title")
 
 

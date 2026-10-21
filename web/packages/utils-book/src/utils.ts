@@ -10,7 +10,8 @@ export function recordBookEvent<TBookEvent extends BaseBookEvent>({
 	bookEvent: TBookEvent;
 }) {
 	if (PUBLIC_CHROMATIC || stateUrlDerived.replay()) {
-		console.log('mock request end-event:', { index: bookEvent.index, type: bookEvent.type });
+		// Storybook only: Stake checks that a released game (replays included) logs nothing to the console
+		if (PUBLIC_CHROMATIC) console.log('mock request end-event:', { index: bookEvent.index, type: bookEvent.type });
 		return;
 	}
 

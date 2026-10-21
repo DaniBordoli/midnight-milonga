@@ -4,13 +4,15 @@ Usage (from the repo root):
     math\\env\\Scripts\\python.exe tools\\make_symbol_assets.py "<folder with the concept art>"
 
 Writes web/apps/midnight-milonga/static/assets/sprites/milonga/:
-    <symbol>.png, <symbol>_win.png (brighter, gold rim), background.jpg, frame.png
+    <symbol>.webp, <symbol>_win.webp (brighter, gold rim), background.webp
 """
 
 import os
 import sys
 
 from PIL import Image, ImageDraw, ImageEnhance
+
+from process_animation_art import save_sprite
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "web", "apps", "midnight-milonga", "static", "assets", "sprites", "milonga")
@@ -47,14 +49,6 @@ def win_variant(img):
     return out
 
 
-def frame(w=1240, h=1000, border=26):
-    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    d.rounded_rectangle([0, 0, w - 1, h - 1], radius=36, fill=(12, 10, 10, 235), outline=GOLD, width=border // 2)
-    d.rounded_rectangle([border, border, w - border - 1, h - border - 1], radius=24, outline=(150, 118, 58), width=4)
-    return img
-
-
 def main(art_dir):
     os.makedirs(OUT, exist_ok=True)
     sheet = Image.open(os.path.join(art_dir, "Hoja de símbolos.jpg"))
@@ -77,12 +71,11 @@ def main(art_dir):
     }
     for name, img in symbols.items():
         t = tile(img)
-        t.save(os.path.join(OUT, f"{name}.png"))
-        win_variant(t).save(os.path.join(OUT, f"{name}_win.png"))
+        save_sprite(t, name, OUT)
+        save_sprite(win_variant(t), f"{name}_win", OUT)
 
     bg = Image.open(os.path.join(art_dir, "Key art o fondo.jpg")).convert("RGB")
-    bg.resize((2048, int(2048 * bg.height / bg.width)), Image.LANCZOS).save(os.path.join(OUT, "background.jpg"), quality=88)
-    frame().save(os.path.join(OUT, "frame.png"))
+    save_sprite(bg.resize((2048, int(2048 * bg.height / bg.width)), Image.LANCZOS), "background", OUT)
     print("ok:", OUT)
 
 

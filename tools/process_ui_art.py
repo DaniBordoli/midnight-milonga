@@ -5,7 +5,7 @@ Usage (from the repo root):
 
 Plates and buttons are chroma-keyed like the animation art. The icon sheet is a 4 x 2 grid of gold
 line icons, each on its own dark tile: only the gold line work is kept, so the icons can sit on the
-round button. Writes web/apps/midnight-milonga/static/assets/sprites/milonga/ui/<name>.png
+round button. Writes web/apps/midnight-milonga/static/assets/sprites/milonga/ui/<name>.webp
 """
 
 import os
@@ -14,7 +14,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-from process_animation_art import fit, key_green
+from process_animation_art import fit, key_green, save_sprite
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "web", "apps", "midnight-milonga", "static", "assets", "sprites", "milonga", "ui")
@@ -46,7 +46,7 @@ def gold_only(img):
 def main(src):
     os.makedirs(OUT, exist_ok=True)
     for name, (file, max_side) in PLATES.items():
-        fit(key_green(Image.open(os.path.join(src, file))), max_side).save(os.path.join(OUT, f"{name}.png"), optimize=True)
+        save_sprite(fit(key_green(Image.open(os.path.join(src, file))), max_side), name, OUT)
         print("ok", name)
 
     sheet = Image.open(os.path.join(src, "Iconos.jpg"))
@@ -55,7 +55,7 @@ def main(src):
         cx, cy = CELL_CENTERS_X[i % 4] * scale, CELL_CENTERS_Y[i // 4] * scale
         h = ICON_HALF * scale
         cell = sheet.crop((int(cx - h), int(cy - h), int(cx + h), int(cy + h)))
-        fit(gold_only(cell), 128).save(os.path.join(OUT, f"icon_{name}.png"), optimize=True)
+        save_sprite(fit(gold_only(cell), 128), f"icon_{name}", OUT)
         print("ok", f"icon_{name}")
 
 

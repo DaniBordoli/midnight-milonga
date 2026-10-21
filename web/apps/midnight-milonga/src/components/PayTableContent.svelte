@@ -8,18 +8,18 @@
 	const amountWord = social ? 'play amount' : 'bet';
 
 	const images: Record<string, string> = {
-		W: new URL('../../assets/sprites/milonga/w.png', import.meta.url).href,
-		H1: new URL('../../assets/sprites/milonga/h1.png', import.meta.url).href,
-		H2: new URL('../../assets/sprites/milonga/h2.png', import.meta.url).href,
-		H3: new URL('../../assets/sprites/milonga/h3.png', import.meta.url).href,
-		H4: new URL('../../assets/sprites/milonga/h4.png', import.meta.url).href,
-		L1: new URL('../../assets/sprites/milonga/l1.png', import.meta.url).href,
-		L2: new URL('../../assets/sprites/milonga/l2.png', import.meta.url).href,
-		L3: new URL('../../assets/sprites/milonga/l3.png', import.meta.url).href,
-		L4: new URL('../../assets/sprites/milonga/l4.png', import.meta.url).href,
-		BM: new URL('../../assets/sprites/milonga/bm.png', import.meta.url).href,
-		BF: new URL('../../assets/sprites/milonga/bf.png', import.meta.url).href,
-		S: new URL('../../assets/sprites/milonga/s.png', import.meta.url).href,
+		W: new URL('../../assets/sprites/milonga/w.webp', import.meta.url).href,
+		H1: new URL('../../assets/sprites/milonga/h1.webp', import.meta.url).href,
+		H2: new URL('../../assets/sprites/milonga/h2.webp', import.meta.url).href,
+		H3: new URL('../../assets/sprites/milonga/h3.webp', import.meta.url).href,
+		H4: new URL('../../assets/sprites/milonga/h4.webp', import.meta.url).href,
+		L1: new URL('../../assets/sprites/milonga/l1.webp', import.meta.url).href,
+		L2: new URL('../../assets/sprites/milonga/l2.webp', import.meta.url).href,
+		L3: new URL('../../assets/sprites/milonga/l3.webp', import.meta.url).href,
+		L4: new URL('../../assets/sprites/milonga/l4.webp', import.meta.url).href,
+		BM: new URL('../../assets/sprites/milonga/bm.webp', import.meta.url).href,
+		BF: new URL('../../assets/sprites/milonga/bf.webp', import.meta.url).href,
+		S: new URL('../../assets/sprites/milonga/s.webp', import.meta.url).href,
 	};
 	const names: Record<string, string> = {
 		H1: 'Bandoneón',

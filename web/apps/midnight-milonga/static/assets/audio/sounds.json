@@ -1,6 +1,5 @@
 {
 	"src": [
-		"./assets/audio/sounds.ogg",
 		"./assets/audio/sounds.mp3"
 	],
 	"sprite": {
@@ -119,25 +118,25 @@
 	},
 	"config": {
 		"bgm_freespin": {
-			"volume": 0
+			"volume": 0.35
 		},
 		"bgm_main": {
-			"volume": 0
+			"volume": 0.25
 		},
 		"bgm_winlevel_big": {
-			"volume": 0
+			"volume": 0.4
 		},
 		"bgm_winlevel_epic": {
-			"volume": 0
+			"volume": 0.4
 		},
 		"bgm_winlevel_max": {
-			"volume": 0
+			"volume": 0.4
 		},
 		"bgm_winlevel_mega": {
-			"volume": 0
+			"volume": 0.4
 		},
 		"bgm_winlevel_superwin": {
-			"volume": 0
+			"volume": 0.4
 		},
 		"jng_intro_fs": {
 			"volume": 1

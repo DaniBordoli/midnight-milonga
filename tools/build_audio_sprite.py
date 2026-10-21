@@ -1,4 +1,4 @@
-"""Build the game's audio sprite (sounds.ogg/.mp3 + sounds.json) from the files in an audio folder.
+"""Build the game's audio sprite (sounds.mp3 + sounds.json) from the files in an audio folder.
 
 Usage: math\\env\\Scripts\\python.exe tools\\build_audio_sprite.py "<slot>/6. Audio"
 Needs ffmpeg on PATH. Effects come from tools/make_sfx.py (<sound key>.wav); the two music tracks are
@@ -25,9 +25,8 @@ MUSIC = {
 }
 WIN_BEDS = ["bgm_winlevel_big", "bgm_winlevel_superwin", "bgm_winlevel_mega", "bgm_winlevel_epic", "bgm_winlevel_max"]
 # playback volume per sound (sounds.json config, applied by the SDK player); everything else plays at 1
-VOLUME = {"bgm_main": 0.45}
-# TEMPORARY: music muted while testing (2026-10-21); delete this block to bring it back before submitting
-VOLUME.update({key: 0 for key in ["bgm_main", "bgm_freespin"] + WIN_BEDS})
+# music sits well under the effects; free spins and big wins a little louder than the base game
+VOLUME = {"bgm_main": 0.25, "bgm_freespin": 0.35, **{key: 0.4 for key in WIN_BEDS}}
 LOOPED = set(MUSIC) | set(WIN_BEDS) | {"sfx_bigwin_coinloop"}
 
 
@@ -104,11 +103,11 @@ def main(folder):
         raw = os.path.join(tmp, "sounds.f32")
         audio.tofile(raw)
         source = ["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ac", "2", "-ar", str(RATE), "-i", raw]
-        subprocess.run(source + ["-c:a", "libvorbis", "-q:a", "4", os.path.join(OUT, "sounds.ogg")], check=True)
-        subprocess.run(source + ["-c:a", "libmp3lame", "-b:a", "128k", os.path.join(OUT, "sounds.mp3")], check=True)
+        # one format only (every browser plays MP3) at 96 kbps: Stake rates bundle size
+        subprocess.run(source + ["-c:a", "libmp3lame", "-b:a", "96k", os.path.join(OUT, "sounds.mp3")], check=True)
 
     manifest = {
-        "src": ["./assets/audio/sounds.ogg", "./assets/audio/sounds.mp3"],
+        "src": ["./assets/audio/sounds.mp3"],
         "sprite": sprite,
         "config": {key: {"volume": VOLUME.get(key, 1)} for key in sprite},
     }
