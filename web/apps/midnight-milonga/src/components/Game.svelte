@@ -77,8 +77,10 @@
 				<UiGameName name="MIDNIGHT MILONGA" />
 			{/snippet}
 			{#snippet logo()}
+				<!-- in portrait the clock + game name fill the top line, so the provider name drops to a second line -->
 				<Text
 					anchor={{ x: 1, y: 0 }}
+					y={context.stateLayoutDerived.layoutType() === 'portrait' ? REM * 2 : 0}
 					text="PAMPA PLAY"
 					style={{
 						fontFamily: 'proxima-nova',
