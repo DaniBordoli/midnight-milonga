@@ -24,6 +24,8 @@ MUSIC = {
     "bgm_freespin": "tango-bleu",
 }
 WIN_BEDS = ["bgm_winlevel_big", "bgm_winlevel_superwin", "bgm_winlevel_mega", "bgm_winlevel_epic", "bgm_winlevel_max"]
+# playback volume per sound (sounds.json config, applied by the SDK player); everything else plays at 1
+VOLUME = {"bgm_main": 0.45}
 LOOPED = set(MUSIC) | set(WIN_BEDS) | {"sfx_bigwin_coinloop"}
 
 
@@ -101,7 +103,7 @@ def main(folder):
     manifest = {
         "src": ["./assets/audio/sounds.ogg", "./assets/audio/sounds.mp3"],
         "sprite": sprite,
-        "config": {key: {"volume": 1} for key in sprite},
+        "config": {key: {"volume": VOLUME.get(key, 1)} for key in sprite},
     }
     with open(os.path.join(OUT, "sounds.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent="\t")

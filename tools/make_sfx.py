@@ -1,7 +1,8 @@
 """Synthesize the short UI / reel sound effects (no samples, no third-party licences).
 
-Usage: math\\env\\Scripts\\python.exe tools\\make_sfx.py <output folder>
+Usage: math\\env\\Scripts\\python.exe tools\\make_sfx.py <output folder> [--options]
 Writes 44.1 kHz mono WAVs named like the game's sound keys (sfx_reel_stop_1.wav, ...).
+--options writes the alternative takes in OPTIONS instead, for review.
 """
 
 import os
@@ -194,6 +195,86 @@ def anticipation():
     return lowpass(tone, 1800) * tremolo * np.minimum(1, tt / 1.5) + beat * 0.8
 
 
+def pluck(freq, seconds, brightness=0.5):
+    """Plucked string (Karplus-Strong): double-bass / guitar pizzicato."""
+    n = int(RATE / freq)
+    buf = rng.uniform(-1, 1, n)
+    out = np.empty(int(RATE * seconds))
+    for i in range(len(out)):
+        out[i] = buf[i % n]
+        buf[i % n] = 0.996 * (brightness * buf[i % n] + (1 - brightness) * buf[(i + 1) % n])
+    return env(out, 0.001, seconds)
+
+
+# ---- options offered for review (written with --options; the chosen one is mapped in OPTIONS_CHOSEN) ----
+
+
+def reel_stop_felt():
+    """A: soft felt-hammer thump, darker and shorter than the original."""
+    tt = t(0.2)
+    freq = 90 * np.exp(-tt * 20) + 55
+    thump = np.sin(2 * np.pi * np.cumsum(freq) / RATE)
+    return lowpass(env(thump, 0.003, 0.04), 900)
+
+
+def reel_stop_clave():
+    """B: wooden clave click, bright and dry (a classic percussion accent)."""
+    tt = t(0.15)
+    tone = np.sin(2 * np.pi * 2500 * tt) + 0.5 * np.sin(2 * np.pi * 3700 * tt)
+    return env(tone, 0.0005, 0.02)
+
+
+def reel_stop_bass():
+    """C: double-bass pizzicato on A (the tango 'marcato' bass note)."""
+    return pluck(110.0, 0.35, 0.3) + env(np.sin(2 * np.pi * 110 * t(0.35)), 0.002, 0.08) * 0.4
+
+
+def anticipation_bass():
+    """A: walking double-bass pizzicato that accelerates and climbs (tango marcato)."""
+    length = 7.0
+    out = np.zeros(int(RATE * length))
+    notes = [110.0, 123.47, 130.81, 146.83, 164.81, 174.61, 196.0, 220.0]
+    s, gap, i = 0.0, 0.5, 0
+    while s < length - 0.3:
+        out += at(pluck(notes[i % len(notes)] * (2 if i >= 16 else 1), 0.4, 0.3), s, length)
+        s, gap, i = s + gap, max(0.12, gap * 0.9), i + 1
+    return out * np.minimum(1, t(length) / 0.5)
+
+
+def anticipation_violin():
+    """B: violin-like tremolo, rising a fifth and swelling, no heartbeat."""
+    length = 7.0
+    tt = t(length)
+    freq = 440 * 2 ** (7 / 12 * tt / length) * (1 + 0.004 * np.sin(2 * np.pi * 5.5 * tt))  # with vibrato
+    phase = 2 * np.pi * np.cumsum(freq) / RATE
+    tone = lowpass(sum(np.sin(phase * h) / h for h in range(1, 12)), 3500)
+    tremolo = 0.55 + 0.45 * np.abs(np.sin(2 * np.pi * 7 * tt))
+    return tone * tremolo * (tt / length) ** 1.5
+
+
+def anticipation_bandoneon():
+    """C: bandoneon chord stabs (staccato marcato) getting faster, louder and higher."""
+    length = 7.0
+    out = np.zeros(int(RATE * length))
+    s, gap, i = 0.0, 0.45, 0
+    while s < length - 0.2:
+        shift = 2 ** (min(i, 20) // 5 * 2 / 12)  # step up a tone every five stabs
+        stab = reed_chord([f * shift for f in [220.0, 261.63, 329.63]], 0.18)
+        out += at(stab * (0.4 + 0.6 * s / length), s, length)
+        s, gap, i = s + gap, max(0.14, gap * 0.92), i + 1
+    return out
+
+
+OPTIONS = {
+    "sfx_reel_stop_1 A felt": reel_stop_felt,
+    "sfx_reel_stop_1 B clave": reel_stop_clave,
+    "sfx_reel_stop_1 C bass": reel_stop_bass,
+    "sfx_anticipation A bass": anticipation_bass,
+    "sfx_anticipation B violin": anticipation_violin,
+    "sfx_anticipation C bandoneon": anticipation_bandoneon,
+}
+
+
 def write(path, x, peak=0.85):
     x = x / max(1e-9, np.abs(x).max()) * peak
     fade = min(len(x), int(RATE * 0.005))
@@ -207,8 +288,12 @@ def write(path, x, peak=0.85):
     print("ok", os.path.basename(path), f"{len(x) / RATE:.2f}s")
 
 
-def main(out):
+def main(out, options=False):
     os.makedirs(out, exist_ok=True)
+    if options:
+        for name, make in OPTIONS.items():
+            write(os.path.join(out, f"{name}.wav"), make(), 0.7)
+        return
     sounds = {
         "sfx_btn_general": (btn_general(), 0.6),
         "sfx_btn_spin": (btn_spin(), 0.7),
@@ -232,4 +317,4 @@ def main(out):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], options="--options" in sys.argv)

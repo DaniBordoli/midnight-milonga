@@ -122,7 +122,7 @@
 			"volume": 1
 		},
 		"bgm_main": {
-			"volume": 1
+			"volume": 0.45
 		},
 		"bgm_winlevel_big": {
 			"volume": 1
