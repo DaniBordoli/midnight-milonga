@@ -15,7 +15,9 @@
 <style lang="scss">
 	.base-button-content {
 		position: absolute;
-		color: white;
+		color: var(--mm-gold);
+		font-family: var(--mm-font-display);
+		letter-spacing: 0.05em;
 		width: 100%;
 		height: 100%;
 		display: flex;

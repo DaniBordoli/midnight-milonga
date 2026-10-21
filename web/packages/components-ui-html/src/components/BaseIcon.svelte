@@ -6,7 +6,7 @@
 		border?: string;
 	};
 
-	const { width, height, background = 'black', border = 'none' }: Props = $props();
+	const { width, height, background = 'var(--mm-button-bg)', border = 'var(--mm-border)' }: Props = $props();
 </script>
 
 <div
@@ -69,6 +69,6 @@
 		height: var(--height-value);
 		background: var(--background-value);
 		border: var(--border-value);
-		border-radius: 10px;
+		border-radius: 6px;
 	}
 </style>

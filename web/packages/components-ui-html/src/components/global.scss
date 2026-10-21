@@ -9,6 +9,17 @@ body {
 :root {
 	--scrollbar-size: 6px;
 	--grey: #cccccc;
+
+	/* Midnight Milonga Art Deco theme for every HTML panel */
+	--mm-gold: #f2d692;
+	--mm-gold-deep: #a8823a;
+	--mm-crimson: #6b1422;
+	--mm-crimson-dark: #2e0810;
+	--mm-panel: #120c0c;
+	--mm-border: 1px solid var(--mm-gold-deep);
+	--mm-border-selected: 2px solid var(--mm-gold);
+	--mm-button-bg: linear-gradient(180deg, #6b1422 0%, #3a0a12 100%);
+	--mm-font-display: 'Federo', Georgia, serif;
 }
 
 .scrollY {
@@ -42,7 +53,7 @@ body {
 
 .scrollX,
 .scrollY {
-	scrollbar-color: var(--grey) transparent;
+	scrollbar-color: var(--mm-gold-deep) transparent;
 }
 
 .scrollX::-webkit-scrollbar {
@@ -55,14 +66,20 @@ body {
 
 .scrollY::-webkit-scrollbar-thumb,
 .scrollX::-webkit-scrollbar-thumb {
-	background: var(--grey);
+	background: var(--mm-gold-deep);
 	border-radius: 10px;
 }
 
 .scroll-light {
-	scrollbar-color: var(--grey) transparent;
+	scrollbar-color: var(--mm-gold-deep) transparent;
 }
 
 .scroll-light::-webkit-scrollbar-thumb {
 	background: var(--grey);
+}
+
+/* volume sliders and checkboxes in the theme's gold instead of the browser blue */
+input[type='range'],
+input[type='checkbox'] {
+	accent-color: var(--mm-gold);
 }

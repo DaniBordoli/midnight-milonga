@@ -41,7 +41,7 @@
 		max-height: 100px;
 		max-width: 480px;
 		border-radius: 8px;
-		border: 1px solid white;
+		border: var(--mm-border);
 		white-space: normal;
 		padding: 1rem;
 	}

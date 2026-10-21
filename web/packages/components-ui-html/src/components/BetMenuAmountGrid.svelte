@@ -38,7 +38,7 @@
 		<BaseIcon
 			width="100%"
 			height="2rem"
-			border={option === stateBet.betAmount ? '2px white solid' : '2px black solid'}
+			border={option === stateBet.betAmount ? 'var(--mm-border-selected)' : 'var(--mm-border)'}
 		/>
 		<BaseButtonContent>
 			<span style="font-size: 1rem;"

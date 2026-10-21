@@ -20,8 +20,8 @@
 			width="100%"
 			height="2rem"
 			border={option === stateUi.autoSpinsSingleWinLimitText
-				? '2px white solid'
-				: '2px black solid'}
+				? 'var(--mm-border-selected)'
+				: 'var(--mm-border)'}
 		/>
 		<BaseButtonContent>
 			<span

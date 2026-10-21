@@ -27,8 +27,9 @@
 		display: flex;
 		justify-content: space-between;
 
-		border-radius: 10px;
-		background: rgba(0, 0, 0, 0.5);
+		border-radius: 6px;
+		background: linear-gradient(180deg, rgba(46, 8, 16, 0.9), rgba(18, 12, 12, 0.9));
+		border: var(--mm-border);
 		text-align: left;
 		min-width: 155px;
 		max-width: 180px;

@@ -90,7 +90,8 @@
 		top: 0;
 		bottom: 0;
 		right: 0;
-		background-color: rgba(0, 0, 0, 0.5);
+		background:
+			radial-gradient(ellipse at center, rgba(46, 8, 16, 0.55), rgba(8, 5, 5, 0.85) 70%);
 		backdrop-filter: blur(30px);
 		-webkit-backdrop-filter: blur(30px);
 	}
@@ -122,7 +123,7 @@
 
 	.close-button {
 		cursor: pointer;
-		color: white;
+		color: var(--mm-gold, white);
 		font-size: 3rem;
 		font-weight: 900;
 		background-color: transparent;

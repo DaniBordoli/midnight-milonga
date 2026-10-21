@@ -51,7 +51,7 @@
 					disabled={stateBet.betAmount <= 0 ||
 						stateBet.balanceAmount < stateBet.betAmount * betModeData.costMultiplier}
 				>
-					<BaseIcon width="100%" height="2rem" border="2px solid white;" />
+					<BaseIcon width="100%" height="2rem" border="var(--mm-border-selected)" />
 					<BaseButtonContent>
 						<span style="font-size: 1rem;">{betModeData.text.button}</span>
 					</BaseButtonContent>
@@ -63,9 +63,12 @@
 
 <style lang="scss">
 	.title {
-		font-size: 1rem;
-		line-height: 1rem;
+		font-size: 1.05rem;
+		line-height: 1.2rem;
 		text-align: center;
+		font-family: var(--mm-font-display);
+		letter-spacing: 0.08em;
+		color: var(--mm-gold);
 	}
 
 	.description {
@@ -82,6 +85,8 @@
 	}
 
 	.price {
+		font-family: var(--mm-font-display);
+		color: var(--mm-gold);
 		font-size: 1rem;
 		line-height: 1rem;
 		text-align: center;
