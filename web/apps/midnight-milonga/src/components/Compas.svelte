@@ -6,25 +6,33 @@
 </script>
 
 <script lang="ts">
-	import { Container, Rectangle, Text } from 'pixi-svelte';
+	import { onDestroy } from 'svelte';
+	import { Tween } from 'svelte/motion';
+	import { backOut } from 'svelte/easing';
+
+	import { Container, Sprite, Text } from 'pixi-svelte';
 	import { FadeContainer } from 'components-pixi';
-	import { waitForTimeout } from 'utils-shared/wait';
 
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
 
-	// Compás: free-spin multiplier meter, left of the board (placeholder until the metronome art).
+	// Compás: free-spin multiplier shown as a metronome left of the board. The pendulum swings faster as
+	// the Compás grows and the number pops when it increases.
 	const context = getContext();
-	const PANEL = { width: SYMBOL_SIZE * 1.3, height: SYMBOL_SIZE * 1.9 };
+	const BODY = { width: SYMBOL_SIZE * 1.3, height: SYMBOL_SIZE * 1.3 * (768 / 416) };
+	const PENDULUM = { width: BODY.height * 0.72 * (47 / 768), height: BODY.height * 0.72 };
 	const position = $derived({
-		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width / 2 - PANEL.width - SYMBOL_SIZE * 0.35,
-		// below the free-spin counter, which sits at the top-left corner of the board
-		y: context.stateGameDerived.boardLayout().y - PANEL.height / 2 + SYMBOL_SIZE * 0.7,
+		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width / 2 - SYMBOL_SIZE * 1.35,
+		// below the free-spin counter, which sits at the board's top-left
+		y: context.stateGameDerived.boardLayout().y + SYMBOL_SIZE * 0.95,
 	});
 
 	let show = $state(false);
 	let value = $state(1);
-	let pulse = $state(1);
+	let phase = $state(0);
+	const pop = new Tween(1, { duration: 400, easing: backOut });
+	const timer = setInterval(() => (phase += 0.03 + Math.min(value, 12) * 0.006), 16);
+	onDestroy(() => clearInterval(timer));
 
 	context.eventEmitter.subscribeOnMount({
 		compasShow: () => (show = true),
@@ -34,9 +42,8 @@
 			value = emitterEvent.value;
 			if (grew) {
 				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_update' });
-				pulse = 1.25;
-				await waitForTimeout(350);
-				pulse = 1;
+				pop.set(1.45, { duration: 0 });
+				await pop.set(1);
 			}
 		},
 	});
@@ -44,29 +51,27 @@
 
 <FadeContainer {show}>
 	<Container {...position}>
-		<Rectangle
-			width={PANEL.width}
-			height={PANEL.height}
-			backgroundColor={0x120c0c}
-			backgroundAlpha={0.9}
-			borderColor={0xdeb862}
-			borderWidth={4}
-			borderRadius={16}
+		<!-- pendulum hinges near the base of the body and swings behind the front plaque -->
+		<Sprite
+			key="fxMetronomePendulum"
+			anchor={{ x: 0.5, y: 1 }}
+			y={BODY.height * 0.18}
+			rotation={Math.sin(phase) * 0.38}
+			{...PENDULUM}
 		/>
+		<Sprite key="fxMetronomeBody" anchor={0.5} {...BODY} />
 		<Text
 			anchor={0.5}
-			x={PANEL.width / 2}
-			y={SYMBOL_SIZE * 0.35}
-			text="COMPÁS"
-			style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.22, fontWeight: '700', fill: 0xdeb862, letterSpacing: 3 }}
-		/>
-		<Text
-			anchor={0.5}
-			x={PANEL.width / 2}
-			y={PANEL.height * 0.6}
-			scale={pulse}
+			y={BODY.height * 0.405}
+			scale={pop.current}
 			text={`x${value}`}
-			style={{ fontFamily: 'Georgia, serif', fontSize: SYMBOL_SIZE * 0.62, fontWeight: '700', fill: 0xf2d692 }}
+			style={{
+				fontFamily: 'Georgia, serif',
+				fontSize: SYMBOL_SIZE * 0.36,
+				fontWeight: '700',
+				fill: 0x2a1408,
+				stroke: { color: 0xf2d692, width: 2 },
+			}}
 		/>
 	</Container>
 </FadeContainer>

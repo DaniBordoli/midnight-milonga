@@ -1,9 +1,12 @@
 <script lang="ts">
-	import { SpineProvider, SpineTrack, Container, Sprite } from 'pixi-svelte';
+	import { onDestroy } from 'svelte';
+
+	import { Container, Rectangle, Sprite } from 'pixi-svelte';
 	import { FadeContainer, LoadingProgress } from 'components-pixi';
 	import { MainContainer } from 'components-layout';
 
 	import { getContext } from '../game/context';
+	import { SYMBOL_SIZE } from '../game/constants';
 	import TransitionAnimation from './TransitionAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 
@@ -11,32 +14,58 @@
 		onloaded: () => void;
 	};
 
+	// Own loading screen: Stake does not allow the Stake Engine loader, logo or splash screen.
 	const props: Props = $props();
 	const context = getContext();
 
+	const BACKGROUND = { width: 2048, height: 1143 };
+	const TITLE = { width: SYMBOL_SIZE * 4.6, height: SYMBOL_SIZE * 4.6 * (844 / 1400) };
+	const BAR = { width: SYMBOL_SIZE * 4.2, height: SYMBOL_SIZE * 4.2 * (94 / 1012) };
+
+	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
+	const coverScale = $derived(Math.max(canvas.width / BACKGROUND.width, canvas.height / BACKGROUND.height));
+
 	let loadingType = $state<'start' | 'transition'>('start');
+	let spin = $state(0);
+	const timer = setInterval(() => (spin += 0.06), 16);
+	onDestroy(() => clearInterval(timer));
 </script>
 
-<!-- logo and loading progress -->
 <FadeContainer show={loadingType === 'start'}>
+	<Sprite
+		key="fxLoadingBg"
+		anchor={0.5}
+		x={canvas.width / 2}
+		y={canvas.height / 2}
+		width={BACKGROUND.width * coverScale}
+		height={BACKGROUND.height * coverScale}
+	/>
+	<Rectangle {...canvas} backgroundColor={0x000000} backgroundAlpha={0.35} />
+
 	<MainContainer>
 		<Container
 			x={context.stateLayoutDerived.mainLayout().width * 0.5}
-			y={context.stateLayoutDerived.mainLayout().height * 0.5}
+			y={context.stateLayoutDerived.mainLayout().height * 0.42}
 		>
-			<SpineProvider key="loader" width={300}>
-				<SpineTrack trackIndex={0} animationName={'title_screen'} loop timeScale={3} />
-			</SpineProvider>
+			<Sprite key="fxTitle" anchor={0.5} y={-SYMBOL_SIZE * 0.6} {...TITLE} />
 			{#if !context.stateApp.loaded}
-				<LoadingProgress y={250} width={1967 * 0.2} height={346 * 0.2}>
+				<Sprite
+					key="fxLoadingRose"
+					anchor={0.5}
+					y={SYMBOL_SIZE * 1.15}
+					width={SYMBOL_SIZE * 0.9}
+					height={SYMBOL_SIZE * 0.9}
+					rotation={spin}
+				/>
+				<LoadingProgress x={-BAR.width / 2} y={SYMBOL_SIZE * 1.9} width={BAR.width} height={BAR.height}>
 					{#snippet background(sizes)}
-						<Sprite key="progressBarBackground.png" {...sizes} />
+						<Rectangle {...sizes} backgroundColor={0x120c0c} backgroundAlpha={0.9} borderRadius={8} />
 					{/snippet}
 					{#snippet progress(sizes)}
-						<Sprite key="progressBar.png" {...sizes} />
+						<Rectangle {...sizes} backgroundColor={0xdeb862} borderRadius={8} />
 					{/snippet}
 					{#snippet frame(sizes)}
-						<Sprite key="progressBarFrame.png" {...sizes} />
+						<Sprite key="fxLoadingBar" {...sizes} />
 					{/snippet}
 				</LoadingProgress>
 			{/if}
@@ -44,12 +73,10 @@
 	</MainContainer>
 </FadeContainer>
 
-<!-- press to continue -->
 <FadeContainer show={loadingType === 'start' && context.stateApp.loaded}>
 	<PressToContinue onpress={() => (loadingType = 'transition')} />
 </FadeContainer>
 
-<!-- transition between the loading screen and the game -->
 <FadeContainer show={loadingType === 'transition'}>
 	<TransitionAnimation oncomplete={props.onloaded} />
 </FadeContainer>

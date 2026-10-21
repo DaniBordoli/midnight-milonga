@@ -14,6 +14,7 @@
 		templateArgs,
 	} from 'components-storybook';
 	import { randomInteger } from 'utils-shared/random';
+	import { stateBet } from 'state-shared';
 
 	import Game from '../components/Game.svelte';
 	import { setContext } from '../game/context';
@@ -27,7 +28,9 @@
 	// Real rounds exported from the math (tools/export_front_data.py)
 	type Book = (typeof baseBooks)[number];
 	const has = (book: Book, type: string) => book.events.some((event: any) => event.type === type);
-	const playRandom = async (books: Book[]) => {
+	// mode = bet mode the round belongs to (the game shows mode-specific art, e.g. La Última Tanda intro)
+	const playRandom = async (books: Book[], mode = 'BASE') => {
+		stateBet.activeBetModeKey = mode;
 		const book = books[randomInteger({ min: 0, max: books.length - 1 })];
 		console.log('Running book id', book.id, 'payout', book.payoutMultiplier / 100);
 		await playBet({ ...book, state: book.events } as any);
@@ -104,7 +107,7 @@
 	args={templateArgs({
 		skipLoadingScreen: true,
 		data: {},
-		action: async () => await playRandom(bonusBooks.filter((b) => b.criteria === 'freegame')),
+		action: async () => await playRandom(bonusBooks.filter((b) => b.criteria === 'freegame'), 'BONUS'),
 	})}
 	{template}
 />
@@ -114,7 +117,7 @@
 	args={templateArgs({
 		skipLoadingScreen: true,
 		data: {},
-		action: async () => await playRandom(big(bonusBooks)),
+		action: async () => await playRandom(big(bonusBooks), 'BONUS'),
 	})}
 	{template}
 />
@@ -124,7 +127,7 @@
 	args={templateArgs({
 		skipLoadingScreen: true,
 		data: {},
-		action: async () => await playRandom(superBooks.filter((b) => b.criteria === 'freegame')),
+		action: async () => await playRandom(superBooks.filter((b) => b.criteria === 'freegame'), 'SUPER'),
 	})}
 	{template}
 />
@@ -134,7 +137,7 @@
 	args={templateArgs({
 		skipLoadingScreen: true,
 		data: {},
-		action: async () => await playRandom(big(superBooks)),
+		action: async () => await playRandom(big(superBooks), 'SUPER'),
 	})}
 	{template}
 />

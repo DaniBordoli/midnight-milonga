@@ -8,10 +8,14 @@ import type { EmitterEventSound } from '../components/Sound.svelte';
 import type { EmitterEventTransition } from '../components/Transition.svelte';
 import type { EmitterEventFeatureBanner } from '../components/FeatureBanner.svelte';
 import type { EmitterEventCompas } from '../components/Compas.svelte';
+import type { EmitterEventAbrazoDance } from '../components/AbrazoDance.svelte';
+import type { EmitterEventRosaThrow } from '../components/RosaThrow.svelte';
 
 export type EmitterEventGame =
 	| EmitterEventFeatureBanner
 	| EmitterEventCompas
+	| EmitterEventAbrazoDance
+	| EmitterEventRosaThrow
 	| EmitterEventBoard
 	| EmitterEventBoardFrame
 	| EmitterEventWin

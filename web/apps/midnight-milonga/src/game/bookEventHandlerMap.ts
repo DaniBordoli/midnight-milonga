@@ -157,7 +157,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		// the dancers light up, then the Bailarín's row turns into wilds
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_wild_explode' });
 		await animateSymbols({ positions: [bookEvent.bailarin, bookEvent.bailarina] });
-		await eventEmitter.broadcastAsync({ type: 'featureBanner', title: '¡EL ABRAZO!' });
+		await eventEmitter.broadcastAsync({ type: 'featureBanner', variant: 'abrazo', title: '¡EL ABRAZO!' });
+		await eventEmitter.broadcastAsync({ type: 'abrazoDance', row: bookEvent.row });
 		bookEvent.wildPositions.forEach(({ reel, row }) => {
 			const reelSymbol = stateGame.board[reel].reelState.symbols[row];
 			reelSymbol.rawSymbol = { name: 'W', wild: true };
@@ -165,12 +166,13 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		});
 	},
 	rosaRoja: async (bookEvent: BookEventOfType<'rosaRoja'>) => {
-		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_landing' });
 		await eventEmitter.broadcastAsync({
 			type: 'featureBanner',
-			title: `LA ROSA ROJA  x${bookEvent.multiplier}`,
-			subtitle: 'multiplica el premio de esta tirada',
+			variant: 'rosa',
+			title: 'LA ROSA ROJA',
+			subtitle: `x${bookEvent.multiplier} on this spin`,
 		});
+		await eventEmitter.broadcastAsync({ type: 'rosaThrow', multiplier: bookEvent.multiplier });
 	},
 	updateGlobalMult: async (bookEvent: BookEventOfType<'updateGlobalMult'>) => {
 		// Compás: free-spin multiplier

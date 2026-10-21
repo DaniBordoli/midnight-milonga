@@ -11,12 +11,11 @@
 
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
-	import { anchorToPivot, BitmapText, Container, Sprite, type Sizes } from 'pixi-svelte';
+	import { anchorToPivot, Container, Rectangle, Text, type Sizes } from 'pixi-svelte';
 
 	const context = getContext();
-	const PANEL_KEY_DESKTOP = 'Frame_FSCounter.png';
+	// own panel (replaces the sample western-style counter plate and bitmap font)
 	const PANEL_RATIO_DESKTOP = 824 / 622;
-	const panelKey = PANEL_KEY_DESKTOP;
 	const panelWidth = $derived(SYMBOL_SIZE * 2);
 	const panelSizes = $derived({
 		width: panelWidth,
@@ -60,7 +59,7 @@
 
 <MainContainer>
 	<FadeContainer {show} {...position} {scale}>
-		<Sprite key={panelKey} {...panelSizes} />
+		<Rectangle {...panelSizes} backgroundColor={0x120c0c} backgroundAlpha={0.9} borderColor={0xdeb862} borderWidth={4} borderRadius={14} />
 		<Container
 			x={panelSizes.width * 0.5}
 			y={panelSizes.height * 0.48}
@@ -69,21 +68,21 @@
 				anchor: { x: 0.5, y: 0.5 },
 			})}
 		>
-			<BitmapText
+			<Text
 				text={'FREE SPIN'}
 				style={{
-					fontFamily: 'gold',
+					fontFamily: 'Georgia, serif', fontWeight: '700', fill: 0xf2d692,
 					fontSize,
 					wordWrap: false,
 				}}
 				onresize={(sizes) => (titleSizes = sizes)}
 			/>
-			<BitmapText
+			<Text
 				text={`${current} OF ${total}`}
 				{...counterPosition}
 				anchor={{ x: 0.5, y: 0 }}
 				style={{
-					fontFamily: 'gold',
+					fontFamily: 'Georgia, serif', fontWeight: '700', fill: 0xf2d692,
 					fontSize,
 				}}
 				onresize={(sizes) => (counterSizes = sizes)}

@@ -19,6 +19,7 @@
 	import { setContext } from '../game/context';
 	import { eventEmitter } from '../game/eventEmitter';
 	import config from '../game/config';
+	import { winLevelMap } from '../game/winLevelMap';
 
 	setContext();
 </script>
@@ -63,6 +64,32 @@
 		data: {},
 		action: async () => {
 			eventEmitter.broadcast({ type: 'boardHide' });
+		},
+	})}
+	{template}
+/>
+
+<Story
+	name="emitterEvent: freeSpinOutro"
+	args={templateArgs({
+		skipLoadingScreen: true,
+		data: {},
+		action: async () => {
+			eventEmitter.broadcast({ type: 'freeSpinOutroShow' });
+			await eventEmitter.broadcastAsync({ type: 'freeSpinOutroCountUp', amount: 125_400_000, winLevelData: winLevelMap[6] });
+			eventEmitter.broadcast({ type: 'freeSpinOutroHide' });
+		},
+	})}
+	{template}
+/>
+
+<Story
+	name="emitterEvent: rosaThrow"
+	args={templateArgs({
+		skipLoadingScreen: true,
+		data: {},
+		action: async () => {
+			await eventEmitter.broadcastAsync({ type: 'rosaThrow', multiplier: 5 });
 		},
 	})}
 	{template}

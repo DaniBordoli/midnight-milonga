@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { MainContainer, OnPressFullScreen } from 'components-layout';
 	import { OnHotkey } from 'components-shared';
-	import { stateUrlDerived } from 'state-shared';
-	import { Sprite } from 'pixi-svelte';
+	import { Text } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { SYMBOL_SIZE } from '../game/constants';
 
 	type Props = {
 		onpress: () => void;
@@ -15,13 +15,19 @@
 </script>
 
 <MainContainer alignVertical="bottom">
-	<Sprite
-		key="pressToContinueText_{stateUrlDerived.lang()}.png"
-		width={800}
-		height={134}
+	<Text
 		anchor={{ x: 0.5, y: 1 }}
 		x={context.stateLayoutDerived.mainLayout().width * 0.5}
-		y={context.stateLayoutDerived.mainLayout().height}
+		y={context.stateLayoutDerived.mainLayout().height - SYMBOL_SIZE * 0.25}
+		text="PRESS ANYWHERE TO CONTINUE"
+		style={{
+			fontFamily: 'Georgia, serif',
+			fontSize: SYMBOL_SIZE * 0.3,
+			fontWeight: '700',
+			fill: 0xf2d692,
+			letterSpacing: 4,
+			dropShadow: { color: 0x000000, blur: 6, distance: 0, alpha: 0.9 },
+		}}
 	/>
 </MainContainer>
 <OnHotkey hotkey="Space" onpress={() => props.onpress()} />

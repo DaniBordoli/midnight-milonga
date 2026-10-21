@@ -5,69 +5,59 @@
 </script>
 
 <script lang="ts">
-	import { Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
+	import { onDestroy } from 'svelte';
+	import { Tween } from 'svelte/motion';
+
+	import { Rectangle, Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 
+	// Art-deco frame (transparent center) over a dark backing; during free spins a gold border pulses
+	// around the board (replaces the sample "reelhouse" spine glow).
 	const context = getContext();
-	const SPINE_SCALE = { width: 0.62, height: 0.66 };
-	// placeholder art-deco frame, same aspect as the 5x4 board
-	const FRAME_SCALE = 1.1;
-	const POSITION_ADJUSTMENT = 1.01;
+	const FRAME_SCALE = 1.14;
+	const board = $derived(context.stateGameDerived.boardLayout());
 
-	type AnimationName = 'reelhouse_glow_start' | 'reelhouse_glow_idle' | 'reelhouse_glow_exit';
-
-	let animationName = $state<AnimationName | undefined>(undefined);
-	let loop = $state(false);
+	const glow = new Tween(0, { duration: 400 });
+	let pulse = $state(0);
+	const timer = setInterval(() => (pulse += 0.05), 16);
+	onDestroy(() => clearInterval(timer));
 
 	context.eventEmitter.subscribeOnMount({
-		boardFrameGlowShow: () => {
-			animationName = 'reelhouse_glow_start';
-			loop = false;
-		},
-		boardFrameGlowHide: () => {
-			if (animationName) animationName = 'reelhouse_glow_exit';
-		},
+		boardFrameGlowShow: () => glow.set(1),
+		boardFrameGlowHide: () => glow.set(0),
 	});
 </script>
 
-{#if animationName}
-	<SpineProvider
-		zIndex={-1}
-		key="reelhouse"
-		x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-		y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
-		width={context.stateGameDerived.boardLayout().width * SPINE_SCALE.width}
-		height={context.stateGameDerived.boardLayout().height * SPINE_SCALE.height}
-	>
-		<SpineTrack
-			trackIndex={0}
-			{animationName}
-			{loop}
-			listener={{
-				complete: (entry) => {
-					if (entry.animation) {
-						if (entry.animation.name === 'reelhouse_glow_start') {
-							animationName = 'reelhouse_glow_idle';
-							loop = true;
-						}
+<Rectangle
+	x={board.x - board.width / 2}
+	y={board.y - board.height / 2}
+	width={board.width}
+	height={board.height}
+	backgroundColor={0x0e0b0b}
+	backgroundAlpha={0.92}
+/>
 
-						if (entry.animation.name === 'reelhouse_glow_exit') {
-							animationName = undefined;
-							loop = false;
-						}
-					}
-				},
-			}}
-		/>
-	</SpineProvider>
+{#if glow.current > 0}
+	<Rectangle
+		x={board.x - (board.width * FRAME_SCALE) / 2}
+		y={board.y - (board.height * FRAME_SCALE) / 2}
+		width={board.width * FRAME_SCALE}
+		height={board.height * FRAME_SCALE}
+		backgroundAlpha={0}
+		borderColor={0xf2d692}
+		borderWidth={10}
+		borderRadius={24}
+		alpha={glow.current * (0.45 + 0.35 * Math.sin(pulse))}
+		blendMode="add"
+	/>
 {/if}
 
 <Sprite
-	key="mmFrame"
+	key="fxBoardFrame"
 	anchor={0.5}
-	x={context.stateGameDerived.boardLayout().x}
-	y={context.stateGameDerived.boardLayout().y}
-	width={context.stateGameDerived.boardLayout().width * FRAME_SCALE}
-	height={context.stateGameDerived.boardLayout().height * FRAME_SCALE}
+	x={board.x}
+	y={board.y}
+	width={board.width * FRAME_SCALE}
+	height={board.height * FRAME_SCALE}
 />

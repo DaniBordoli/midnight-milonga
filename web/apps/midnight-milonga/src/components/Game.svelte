@@ -27,6 +27,8 @@
 	import Transition from './Transition.svelte';
 	import Compas from './Compas.svelte';
 	import FeatureBanner from './FeatureBanner.svelte';
+	import AbrazoDance from './AbrazoDance.svelte';
+	import RosaThrow from './RosaThrow.svelte';
 	import GameRulesContent from './GameRulesContent.svelte';
 	import PayTableContent from './PayTableContent.svelte';
 
@@ -88,6 +90,8 @@
 				/>
 			{/snippet}
 		</UI>
+		<AbrazoDance />
+		<RosaThrow />
 		<FeatureBanner />
 		<Win />
 		<FreeSpinIntro />

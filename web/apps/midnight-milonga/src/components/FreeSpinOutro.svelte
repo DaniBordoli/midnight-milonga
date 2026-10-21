@@ -8,32 +8,38 @@
 </script>
 
 <script lang="ts">
-	import { Sprite, SpineProvider, SpineTrack, SpineSlot } from 'pixi-svelte';
-	import { FadeContainer, WinCountUpProvider, ResponsiveBitmapText } from 'components-pixi';
+	import { Tween } from 'svelte/motion';
+	import { backOut } from 'svelte/easing';
+
+	import { Container, Sprite, Text } from 'pixi-svelte';
+	import { FadeContainer, WinCountUpProvider } from 'components-pixi';
 	import { bookEventAmountToCurrencyString } from 'utils-shared/amount';
 	import { waitForResolve } from 'utils-shared/wait';
-	import { CanvasSizeRectangle } from 'components-layout';
+	import { CanvasSizeRectangle, MainContainer } from 'components-layout';
 	import { OnMount } from 'components-shared';
-	import { stateUrlDerived } from 'state-shared';
 
 	import { getContext } from '../game/context';
-	import FreeSpinAnimation from './FreeSpinAnimation.svelte';
+	import { SYMBOL_SIZE, WIN_TEXT_STYLE } from '../game/constants';
 	import PressToContinue from './PressToContinue.svelte';
 	import WinCoins from './WinCoins.svelte';
 
-	type AnimationName = 'intro' | 'idle';
-
+	// End of bonus: "TOTAL WIN" panel with the counted-up amount and rose petals.
 	const context = getContext();
+	const PANEL = { width: SYMBOL_SIZE * 5.6, height: SYMBOL_SIZE * 5.6 * (578 / 962) };
+	const pop = new Tween(0.7, { duration: 450, easing: backOut });
 
 	let show = $state(true);
-	let animationName = $state<AnimationName>('intro');
 	let amount = $state(0);
 	let winLevelData = $state<WinLevelData>();
 	let oncomplete = $state(() => {});
 	let onCountUpComplete = $state(() => {});
 
 	context.eventEmitter.subscribeOnMount({
-		freeSpinOutroShow: () => (show = true),
+		freeSpinOutroShow: () => {
+			show = true;
+			pop.set(0.7, { duration: 0 });
+			pop.set(1);
+		},
 		freeSpinOutroHide: async () => (show = false),
 		freeSpinOutroCountUp: async (emitterEvent) => {
 			amount = emitterEvent.amount;
@@ -46,61 +52,30 @@
 <FadeContainer {show}>
 	{#if winLevelData}
 		{@const duration = winLevelData.presentDuration}
-		{@const isBigWin = winLevelData.type === 'big'}
 		<WinCountUpProvider {amount} {duration} oncomplete={() => onCountUpComplete()}>
 			{#snippet children({ countUpAmount, startCountUp, finishCountUp, countUpCompleted })}
 				<OnMount onmount={() => startCountUp()} />
 
-				<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.5} />
+				<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.6} />
 
-				<FreeSpinAnimation>
-					{#snippet children({ sizes })}
-						{#if isBigWin}
-							<Sprite
-								anchor={{ x: 0.5, y: 1.2 }}
-								width={500 * 2.2}
-								height={156 * 2.2}
-								key="freespins_{stateUrlDerived.lang()}.png"
-							/>
-						{:else}
-							<Sprite
-								anchor={{ x: 0.5, y: 1.2 }}
-								width={500 * 4.5}
-								height={80 * 4.5}
-								key="winsmall_{stateUrlDerived.lang()}.png"
-							/>
-						{/if}
-
-						<SpineProvider key="fsOutroNumber" width={sizes.width * 0.4}>
-							<SpineTrack
-								trackIndex={0}
-								{animationName}
-								loop={animationName === 'idle'}
-								listener={{
-									complete: () => (animationName = 'idle'),
-								}}
-							/>
-							<SpineSlot slotName="slot_number">
-								<ResponsiveBitmapText
-									anchor={0.5}
-									style={{
-										fontFamily: 'gold',
-										fontSize: sizes.width * 0.08,
-									}}
-									text={bookEventAmountToCurrencyString(countUpAmount)}
-									maxWidth={sizes.width}
-								/>
-							</SpineSlot>
-						</SpineProvider>
-
-						<Sprite
-							anchor={{ x: 0.5, y: isBigWin ? -3.2 : -2 }}
-							width={177 * (isBigWin ? 2.2 : 3)}
-							height={42 * (isBigWin ? 2.2 : 3)}
-							key="totalwin.png"
+				<MainContainer>
+					<Container
+						x={context.stateGameDerived.boardLayout().x}
+						y={context.stateGameDerived.boardLayout().y}
+						scale={pop.current}
+					>
+						<Sprite key="fxTotalWinPanel" anchor={0.5} {...PANEL} />
+						{@const amountText = bookEventAmountToCurrencyString(countUpAmount)}
+						<!-- the panel's window fits ~8 characters at full size; shrink longer amounts -->
+						<Text
+							anchor={0.5}
+							y={PANEL.height * 0.02}
+							scale={Math.min(1, 8 / amountText.length)}
+							text={amountText}
+							style={WIN_TEXT_STYLE}
 						/>
-					{/snippet}
-				</FreeSpinAnimation>
+					</Container>
+				</MainContainer>
 
 				<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />
 

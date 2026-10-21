@@ -1,54 +1,45 @@
 <script lang="ts">
-	import { SpineProvider, SpineTrack } from 'pixi-svelte';
-	import { stateBetDerived } from 'state-shared';
+	import { onDestroy } from 'svelte';
+	import { Tween } from 'svelte/motion';
+
+	import { Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 	import type { Reel } from '../game/stateGame.svelte';
-	import { REEL_PADDING, SYMBOL_SIZE } from '../game/constants';
+	import { REEL_PADDING, SYMBOL_SIZE, BOARD_DIMENSIONS } from '../game/constants';
 
 	type Props = {
 		reel: Reel;
 		oncomplete: () => void;
 	};
 
+	// Golden spotlight column over the anticipated reel: fades in, pulses while spinning, fades out on stop.
 	const props: Props = $props();
 	const context = getContext();
-
-	type AnimationName = 'anticipation_intro' | 'anticipation_loop' | 'anticipation_out';
-
-	let animationName = $state<AnimationName>('anticipation_intro');
+	const fade = new Tween(0, { duration: 250 });
+	let pulse = $state(0);
+	let finished = false;
+	const timer = setInterval(() => (pulse += 0.12), 16);
+	fade.set(1);
 
 	$effect(() => {
-		if (props.reel.reelState.motion === 'stopped') {
-			animationName = 'anticipation_out';
+		if (props.reel.reelState.motion === 'stopped' && !finished) {
+			finished = true;
+			fade.set(0).then(() => props.oncomplete());
 		}
 	});
+	onDestroy(() => clearInterval(timer));
 </script>
 
-<SpineProvider
-	key="anticipation"
-	width={SYMBOL_SIZE * 0.56}
-	height={SYMBOL_SIZE * 1.6}
+<Sprite
+	key="fxAnticipation"
+	anchor={0.5}
+	blendMode="add"
+	alpha={fade.current * (0.75 + 0.25 * Math.sin(pulse))}
+	width={SYMBOL_SIZE * 1.15}
+	height={SYMBOL_SIZE * (BOARD_DIMENSIONS.y + 0.4)}
 	x={context.stateGameDerived.boardLayout().x -
 		context.stateGameDerived.boardLayout().width * 0.5 +
 		(props.reel.reelIndex + REEL_PADDING) * SYMBOL_SIZE}
-	y={context.stateGameDerived.boardLayout().y - SYMBOL_SIZE * 0.06}
->
-	<SpineTrack
-		trackIndex={0}
-		{animationName}
-		loop={animationName === 'anticipation_loop'}
-		timeScale={stateBetDerived.timeScale()}
-		listener={{
-			complete: () => {
-				if (animationName === 'anticipation_intro') {
-					animationName = 'anticipation_loop';
-				}
-
-				if (animationName === 'anticipation_out') {
-					props.oncomplete();
-				}
-			},
-		}}
-	/>
-</SpineProvider>
+	y={context.stateGameDerived.boardLayout().y}
+/>

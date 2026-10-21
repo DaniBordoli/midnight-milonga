@@ -22,10 +22,5 @@
 </script>
 
 {#if transitioning}
-	<TransitionAnimation
-		oncomplete={() => {
-			oncomplete();
-			transitioning = false;
-		}}
-	/>
+	<TransitionAnimation oncomplete={() => oncomplete()} onfinish={() => (transitioning = false)} />
 {/if}

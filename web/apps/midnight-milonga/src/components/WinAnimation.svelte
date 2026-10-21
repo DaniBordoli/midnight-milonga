@@ -1,46 +1,44 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { Tween } from 'svelte/motion';
+	import { backOut } from 'svelte/easing';
 
-	import { SpineProvider, SpineTrack, SpineSlot } from 'pixi-svelte';
+	import { Container, Sprite } from 'pixi-svelte';
 
-	import { getContext } from '../game/context';
-
-	type AnimationState = 'intro' | 'idle' | 'outro';
+	import { SYMBOL_SIZE } from '../game/constants';
 
 	type Props = {
-		animationMap: {
-			intro:
-				| 'big_win_intro'
-				| 'epic_win_intro'
-				| 'max_win_intro'
-				| 'mega_win_intro'
-				| 'super_win_intro';
-			idle: 'big_win_idle' | 'epic_win_idle' | 'max_win_idle' | 'mega_win_idle' | 'super_win_idle';
-			outro: 'big_win_exit' | 'epic_win_exit' | 'max_win_exit' | 'mega_win_exit' | 'super_win_exit';
-		};
+		// kept from the sample big-win spine: the intro name tells the tier (big, super, mega, epic, max)
+		animationMap: { intro: string; idle: string; outro: string };
 		children: Snippet;
 	};
 
+	// Big win: title plate popping in over pulsing gold sparkles, amount underneath.
+	// Only the "BIG WIN" plate exists for now, so higher tiers reuse it a bit larger.
 	const props: Props = $props();
-	const context = getContext();
+	const tier = $derived(['big', 'super', 'mega', 'epic', 'max'].findIndex((t) => props.animationMap.intro.startsWith(t)));
+	const PLATE = { width: SYMBOL_SIZE * 4.6, height: SYMBOL_SIZE * 4.6 * (307 / 910) };
 
-	let oncomplete = $state(() => {});
-	let animationState = $state<AnimationState>('intro');
+	const pop = new Tween(0.3, { duration: 550, easing: backOut });
+	let pulse = $state(0);
+	const timer = setInterval(() => (pulse += 0.08), 16);
+	onMount(() => pop.set(1 + Math.max(tier, 0) * 0.06));
+	onDestroy(() => clearInterval(timer));
 </script>
 
-<SpineProvider width={context.stateGameDerived.boardLayout().width} key="bigwin">
-	<SpineTrack
-		trackIndex={0}
-		animationName={props.animationMap[animationState]}
-		loop={animationState === 'idle'}
-		listener={{
-			complete: () => {
-				if (animationState === 'intro') animationState = 'idle';
-				if (animationState === 'outro') oncomplete();
-			},
-		}}
+<Container scale={pop.current} y={-SYMBOL_SIZE * 0.55}>
+	<Sprite
+		key="fxSparkles"
+		anchor={0.5}
+		width={SYMBOL_SIZE * 5.2}
+		height={SYMBOL_SIZE * 5.2}
+		alpha={0.55 + 0.35 * Math.sin(pulse)}
+		rotation={pulse * 0.05}
+		blendMode="add"
 	/>
-	<SpineSlot slotName="slot_win_count">
-		{@render props.children()}
-	</SpineSlot>
-</SpineProvider>
+	<Sprite key="fxBigWin" anchor={0.5} {...PLATE} />
+</Container>
+<Container y={SYMBOL_SIZE * 0.85}>
+	{@render props.children()}
+</Container>
