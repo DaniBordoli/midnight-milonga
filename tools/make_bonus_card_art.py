@@ -38,10 +38,10 @@ def main():
     # La Última Tanda: the couple standing in the spotlight
     stage = sprite("tanda_bg")
     couple = sprite("tanda_couple")
-    scale = stage.height * 0.62 / couple.height
+    scale = stage.height * 0.5 / couple.height
     couple = couple.resize((int(couple.width * scale), int(couple.height * scale)), Image.LANCZOS)
-    stage.alpha_composite(couple, (int(stage.width * 0.47 - couple.width / 2), int(stage.height * 0.86 - couple.height)))
-    save_sprite(crop(stage, 0.47, 0.5, 1.1), "super", OUT)
+    stage.alpha_composite(couple, (int(stage.width * 0.5 - couple.width / 2), int(stage.height * 0.9 - couple.height)))
+    save_sprite(crop(stage, 0.5, 0.55, 1.1), "super", OUT)
 
 
 if __name__ == "__main__":
