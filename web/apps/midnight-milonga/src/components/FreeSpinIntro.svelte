@@ -21,7 +21,7 @@
 
 	// La Pista / La Última Tanda intro, built from layered art (background, title plate, spins plate, couple).
 	const context = getContext();
-	const BACKGROUND = { width: 1024, height: 572 };
+	const BACKGROUND = { width: 2048, height: 1143 };
 	const isSuper = $derived(String(stateBet.activeBetModeKey).toUpperCase() === 'SUPER');
 
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
@@ -70,7 +70,7 @@
 				x={center.x - SYMBOL_SIZE * 3.4}
 				y={center.y + SYMBOL_SIZE * 2.6}
 				width={SYMBOL_SIZE * 2.6}
-				height={SYMBOL_SIZE * 2.6 * (836 / 549)}
+				height={SYMBOL_SIZE * 2.6 * (686 / 594)}
 			/>
 		{/if}
 		<Container {...center} scale={pop.current}>

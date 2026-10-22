@@ -82,8 +82,6 @@ export default {
 	fxBannerRosa: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/banner_rosa.webp', import.meta.url).href },
 	fxBannerAbrazo: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/banner_abrazo.webp', import.meta.url).href },
 	fxAbrazoTrail: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/abrazo_trail.webp', import.meta.url).href },
-	fxAbrazo1: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/abrazo_1.webp', import.meta.url).href },
-	fxAbrazo2: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/abrazo_2.webp', import.meta.url).href },
-	fxAbrazo3: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/abrazo_3.webp', import.meta.url).href },
-	fxAbrazo4: { type: 'sprite', src: new URL('../../assets/sprites/milonga/fx/abrazo_4.webp', import.meta.url).href },
+	// El Abrazo dance spritesheet (tools/process_cartoon_bonus.py)
+	fxAbrazoDance: { type: 'spriteSheet', src: new URL('../../assets/sprites/milonga/fx/abrazo_dance.json', import.meta.url).href },
 } as const;

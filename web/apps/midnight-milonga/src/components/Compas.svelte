@@ -19,8 +19,8 @@
 	// Compás: free-spin multiplier shown as a metronome left of the board. The pendulum swings faster as
 	// the Compás grows and the number pops when it increases.
 	const context = getContext();
-	const BODY = { width: SYMBOL_SIZE * 1.3, height: SYMBOL_SIZE * 1.3 * (768 / 416) };
-	const PENDULUM = { width: BODY.height * 0.72 * (47 / 768), height: BODY.height * 0.72 };
+	const BODY = { width: SYMBOL_SIZE * 1.3, height: SYMBOL_SIZE * 1.3 * (699 / 417) }; // cartoon art, tools/process_cartoon_bonus.py
+	const PENDULUM = { width: BODY.height * 0.72 * (101 / 717), height: BODY.height * 0.72 };
 	const position = $derived({
 		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width / 2 - SYMBOL_SIZE * 1.85, // clear of the frame's side ornaments
 		// below the free-spin counter, which sits at the board's top-left
@@ -55,14 +55,14 @@
 		<Sprite
 			key="fxMetronomePendulum"
 			anchor={{ x: 0.5, y: 1 }}
-			y={BODY.height * 0.18}
+			y={BODY.height * 0.12}
 			rotation={Math.sin(phase) * 0.38}
 			{...PENDULUM}
 		/>
 		<Sprite key="fxMetronomeBody" anchor={0.5} {...BODY} />
 		<Text
 			anchor={0.5}
-			y={BODY.height * 0.405}
+			y={BODY.height * 0.25}
 			scale={pop.current}
 			text={`x${value}`}
 			style={{
