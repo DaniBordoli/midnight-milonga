@@ -3,7 +3,7 @@
 
 	import { getContext } from '../game/context';
 
-	// placeholder key art (2048 x 1143), scaled to cover the canvas
+	// cartoon milonga hall (2048 x 1143, tools/process_cartoon_background.py), scaled to cover the canvas
 	const BACKGROUND_SIZE = { width: 2048, height: 1143 };
 
 	const context = getContext();
