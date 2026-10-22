@@ -17,12 +17,17 @@ from process_animation_art import OUT as FX, save_sprite
 SIZE = (2048, 1143)
 
 
-def main(src):
-    img = Image.open(src).convert("RGB")
-    s = max(SIZE[0] / img.width, SIZE[1] / img.height)
+def cover(img, size=SIZE):
+    """Scale to cover size, then crop the centre."""
+    img = img.convert("RGB")
+    s = max(size[0] / img.width, size[1] / img.height)
     img = img.resize((round(img.width * s), round(img.height * s)), Image.LANCZOS)
-    left, top = (img.width - SIZE[0]) // 2, (img.height - SIZE[1]) // 2
-    save_sprite(img.crop((left, top, left + SIZE[0], top + SIZE[1])), "background", os.path.dirname(FX))
+    left, top = (img.width - size[0]) // 2, (img.height - size[1]) // 2
+    return img.crop((left, top, left + size[0], top + size[1]))
+
+
+def main(src):
+    save_sprite(cover(Image.open(src)), "background", os.path.dirname(FX))
 
 
 if __name__ == "__main__":

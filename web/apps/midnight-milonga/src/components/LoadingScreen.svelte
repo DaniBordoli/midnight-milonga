@@ -19,8 +19,9 @@
 	const context = getContext();
 
 	const BACKGROUND = { width: 2048, height: 1143 };
-	const TITLE = { width: SYMBOL_SIZE * 4.6, height: SYMBOL_SIZE * 4.6 * (844 / 1400) };
-	const BAR = { width: SYMBOL_SIZE * 4.2, height: SYMBOL_SIZE * 4.2 * (94 / 1012) };
+	// art aspects from tools/process_cartoon_loading.py: logo 1209 x 497, bar frame 689 x 118
+	const TITLE = { width: SYMBOL_SIZE * 4.6, height: SYMBOL_SIZE * 4.6 * (497 / 1209) };
+	const BAR = { width: SYMBOL_SIZE * 4.2, height: SYMBOL_SIZE * 4.2 * (118 / 689) };
 
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 	const coverScale = $derived(Math.max(canvas.width / BACKGROUND.width, canvas.height / BACKGROUND.height));

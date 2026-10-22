@@ -36,8 +36,8 @@
 
 	const context = getContext();
 
-	// header logos, sized from their sprite aspect ratios (title 1400 x 844, Pampa Play 512 x 115)
-	const GAME_LOGO = { width: ((REM * 5) * 1400) / 844, height: REM * 5 };
+	// header logos, sized from their sprite aspect ratios (title 1209 x 497, Pampa Play 512 x 115)
+	const GAME_LOGO = { width: ((REM * 3.6) * 1209) / 497, height: REM * 3.6 };
 	const BRAND_LOGO = { width: ((REM * 2.4) * 512) / 115, height: REM * 2.4 };
 
 	onMount(() => (context.stateLayout.showLoadingScreen = true));
