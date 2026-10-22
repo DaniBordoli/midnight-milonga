@@ -12,11 +12,11 @@
 
 	import { getContext } from '../game/context';
 
-	// Art-deco frame (transparent center) over a dark backing; during free spins a gold border pulses
-	// around the board (replaces the sample "reelhouse" spine glow).
+	// Cartoon art-deco frame drawn behind the symbols (its dark window backs the board); during free spins
+	// a gold border pulses around the board (replaces the sample "reelhouse" spine glow).
 	const context = getContext();
-	// the frame art's opening is 74% x 69% of the image: scale it so the opening clears the whole board
-	const FRAME_SCALE = { x: 1.4, y: 1.5 };
+	// scaled so the frame's dark window, inside its red inner trim, clears the whole board
+	const FRAME_SCALE = { x: 1.25, y: 1.42 };
 	// free-spin glow hugs the symbols inside the opening
 	const GLOW_SCALE = 1.03;
 	const board = $derived(context.stateGameDerived.boardLayout());
