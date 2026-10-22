@@ -25,7 +25,7 @@
 
 	// End of bonus: "TOTAL WIN" panel with the counted-up amount and rose petals.
 	const context = getContext();
-	const PANEL = { width: SYMBOL_SIZE * 5.6, height: SYMBOL_SIZE * 5.6 * (578 / 962) };
+	const PANEL = { width: SYMBOL_SIZE * 5.6, height: SYMBOL_SIZE * 5.6 * (437 / 687) };
 	const pop = new Tween(0.7, { duration: 450, easing: backOut });
 
 	let show = $state(true);

@@ -18,11 +18,11 @@
 	const props: Props = $props();
 	// key and width/height ratio of each tier's plate image
 	const PLATES = [
-		{ tier: 'big', key: 'fxBigWin', ratio: 307 / 910 },
-		{ tier: 'super', key: 'fxSuperWin', ratio: 282 / 975 },
-		{ tier: 'mega', key: 'fxMegaWin', ratio: 302 / 975 },
-		{ tier: 'epic', key: 'fxEpicWin', ratio: 301 / 975 },
-		{ tier: 'max', key: 'fxMaxWin', ratio: 335 / 1003 },
+		{ tier: 'big', key: 'fxBigWin', ratio: 291 / 1024 },
+		{ tier: 'super', key: 'fxSuperWin', ratio: 252 / 1023 },
+		{ tier: 'mega', key: 'fxMegaWin', ratio: 222 / 1024 },
+		{ tier: 'epic', key: 'fxEpicWin', ratio: 526 / 1024 },
+		{ tier: 'max', key: 'fxMaxWin', ratio: 303 / 1024 },
 	];
 	const plate = $derived(PLATES.find((p) => props.animationMap.intro.startsWith(p.tier)) ?? PLATES[0]);
 	const PLATE_WIDTH = SYMBOL_SIZE * 4.6;

@@ -5,8 +5,9 @@
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { onMount } from 'svelte';
 
-	// frames per tick at 60 fps: 16 frames in about 2 seconds
-	const WIN_ANIMATION_SPEED = 16 / 120;
+	// frames per tick at 60 fps: 16 frames in about a second (wins are shown one after another, so longer
+	// animations drag out spins with several wins)
+	const WIN_ANIMATION_SPEED = 16 / 60;
 
 	type Props = {
 		x?: number;
@@ -30,7 +31,7 @@
 </script>
 
 {#if animated}
-	<!-- win animation: 16 frames over about 2 seconds, played once while the win is shown -->
+	<!-- win animation: 16 frames over about a second, played once while the win is shown -->
 	<SpriteSheet
 		x={props.x}
 		y={props.y}

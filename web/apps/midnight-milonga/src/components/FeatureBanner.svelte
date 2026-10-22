@@ -22,8 +22,8 @@
 
 	const context = getContext();
 	const PLATES = {
-		abrazo: { key: 'fxBannerAbrazo', ratio: 212 / 978 },
-		rosa: { key: 'fxBannerRosa', ratio: 250 / 994 },
+		abrazo: { key: 'fxBannerAbrazo', ratio: 299 / 1023 },
+		rosa: { key: 'fxBannerRosa', ratio: 361 / 1024 },
 	} as const;
 	const PLATE_WIDTH = SYMBOL_SIZE * 4.6;
 	const PANEL = { width: SYMBOL_SIZE * 4.6, height: SYMBOL_SIZE * 1.3 };

@@ -79,9 +79,9 @@
 				anchor={0.5}
 				y={-SYMBOL_SIZE * 1.75}
 				width={SYMBOL_SIZE * 5}
-				height={SYMBOL_SIZE * 5 * (isSuper ? 201 / 1022 : 245 / 1024)}
+				height={SYMBOL_SIZE * 5 * (isSuper ? 280 / 1023 : 375 / 1024)}
 			/>
-			<Sprite key="fxSpinsPlate" anchor={0.5} y={SYMBOL_SIZE * 0.25} width={SYMBOL_SIZE * 2.4} height={SYMBOL_SIZE * 2.4 * (768 / 726)} />
+			<Sprite key="fxSpinsPlate" anchor={0.5} y={SYMBOL_SIZE * 0.25} width={SYMBOL_SIZE * 2.4} height={SYMBOL_SIZE * 2.4 * (704 / 669)} />
 			<Text
 				anchor={0.5}
 				y={SYMBOL_SIZE * -0.05}
