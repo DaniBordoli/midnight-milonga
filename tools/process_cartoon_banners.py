@@ -13,7 +13,7 @@ import sys
 
 from PIL import Image
 
-from process_animation_art import OUT as FX, fit, save_sprite
+from sprite_utils import FX, fit, save_sprite
 
 # output name: chosen file (variants a/b from the first round, c/d from the redo)
 CHOSEN = {

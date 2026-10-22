@@ -16,7 +16,7 @@ import sys
 
 from PIL import Image
 
-from process_animation_art import OUT as FX, fit, save_sprite
+from sprite_utils import FX, fit, save_sprite
 from process_cartoon_background import cover
 
 # output name: (source file, max size)

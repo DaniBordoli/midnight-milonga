@@ -15,8 +15,7 @@ import sys
 import numpy as np
 from PIL import Image, ImageDraw
 
-from process_animation_art import OUT as FX, fit, save_sprite
-from process_ui_art import OUT as UI
+from sprite_utils import FX, UI, fit, save_sprite
 
 # output name: (source file, aspect width / height the component draws it at, max size)
 PIECES = {

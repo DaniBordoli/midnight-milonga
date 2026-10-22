@@ -1,4 +1,4 @@
-"""Bonus menu card images, cropped from sprites the game already ships (run process_animation_art.py first).
+"""Bonus menu card images, cropped from sprites the game already ships (run the process_cartoon_*.py scripts first).
 
 Usage (from the repo root):
     math\\env\\Scripts\\python.exe tools\\make_bonus_card_art.py
@@ -10,7 +10,7 @@ import os
 
 from PIL import Image
 
-from process_animation_art import OUT as FX, save_sprite
+from sprite_utils import FX, save_sprite
 
 OUT = os.path.join(os.path.dirname(FX), "bonus")
 SIZE = (360, 200)

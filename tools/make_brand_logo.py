@@ -12,8 +12,7 @@ import sys
 
 from PIL import Image
 
-from process_animation_art import fit, save_sprite
-from process_ui_art import OUT
+from sprite_utils import UI as OUT, fit, save_sprite
 
 
 def main(src):

@@ -12,7 +12,7 @@ import sys
 
 from PIL import Image
 
-from process_animation_art import OUT as FX, save_sprite
+from sprite_utils import FX, save_sprite
 
 SIZE = (2048, 1143)
 

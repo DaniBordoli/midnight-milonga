@@ -4,27 +4,27 @@
    "frame": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 150
+    "w": 148,
+    "h": 160
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 150
+    "w": 148,
+    "h": 160
    },
    "sourceSize": {
-    "w": 160,
-    "h": 150
+    "w": 148,
+    "h": 160
    }
   },
   "2.png": {
    "frame": {
-    "x": 162,
+    "x": 150,
     "y": 0,
-    "w": 146,
+    "w": 123,
     "h": 160
    },
    "rotated": false,
@@ -32,100 +32,100 @@
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 146,
+    "w": 123,
     "h": 160
    },
    "sourceSize": {
-    "w": 146,
+    "w": 123,
     "h": 160
    }
   },
   "3.png": {
    "frame": {
-    "x": 310,
+    "x": 275,
     "y": 0,
-    "w": 160,
-    "h": 138
+    "w": 153,
+    "h": 160
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 138
+    "w": 153,
+    "h": 160
    },
    "sourceSize": {
-    "w": 160,
-    "h": 138
+    "w": 153,
+    "h": 160
    }
   },
   "4.png": {
    "frame": {
-    "x": 472,
+    "x": 430,
     "y": 0,
-    "w": 160,
-    "h": 122
+    "w": 157,
+    "h": 160
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 122
+    "w": 157,
+    "h": 160
    },
    "sourceSize": {
-    "w": 160,
-    "h": 122
+    "w": 157,
+    "h": 160
    }
   },
   "5.png": {
    "frame": {
-    "x": 634,
+    "x": 589,
     "y": 0,
-    "w": 160,
-    "h": 91
+    "w": 144,
+    "h": 160
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 91
+    "w": 144,
+    "h": 160
    },
    "sourceSize": {
-    "w": 160,
-    "h": 91
+    "w": 144,
+    "h": 160
    }
   },
   "6.png": {
    "frame": {
-    "x": 796,
+    "x": 735,
     "y": 0,
-    "w": 160,
-    "h": 134
+    "w": 147,
+    "h": 160
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 134
+    "w": 147,
+    "h": 160
    },
    "sourceSize": {
-    "w": 160,
-    "h": 134
+    "w": 147,
+    "h": 160
    }
   },
   "7.png": {
    "frame": {
-    "x": 958,
+    "x": 884,
     "y": 0,
     "w": 160,
-    "h": 107
+    "h": 156
    },
    "rotated": false,
    "trimmed": false,
@@ -133,18 +133,18 @@
     "x": 0,
     "y": 0,
     "w": 160,
-    "h": 107
+    "h": 156
    },
    "sourceSize": {
     "w": 160,
-    "h": 107
+    "h": 156
    }
   },
   "8.png": {
    "frame": {
-    "x": 1120,
+    "x": 1046,
     "y": 0,
-    "w": 120,
+    "w": 144,
     "h": 160
    },
    "rotated": false,
@@ -152,52 +152,32 @@
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 120,
+    "w": 144,
     "h": 160
    },
    "sourceSize": {
-    "w": 120,
+    "w": 144,
     "h": 160
    }
   },
   "9.png": {
    "frame": {
-    "x": 1242,
+    "x": 1192,
     "y": 0,
-    "w": 160,
-    "h": 109
+    "w": 156,
+    "h": 160
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 160,
-    "h": 109
+    "w": 156,
+    "h": 160
    },
    "sourceSize": {
-    "w": 160,
-    "h": 109
-   }
-  },
-  "10.png": {
-   "frame": {
-    "x": 1404,
-    "y": 0,
-    "w": 160,
-    "h": 132
-   },
-   "rotated": false,
-   "trimmed": false,
-   "spriteSourceSize": {
-    "x": 0,
-    "y": 0,
-    "w": 160,
-    "h": 132
-   },
-   "sourceSize": {
-    "w": 160,
-    "h": 132
+    "w": 156,
+    "h": 160
    }
   }
  },
@@ -211,15 +191,14 @@
    "6.png",
    "7.png",
    "8.png",
-   "9.png",
-   "10.png"
+   "9.png"
   ]
  },
  "meta": {
   "image": "petals_sheet.webp",
   "format": "RGBA8888",
   "size": {
-   "w": 1566,
+   "w": 1350,
    "h": 160
   },
   "scale": "1"

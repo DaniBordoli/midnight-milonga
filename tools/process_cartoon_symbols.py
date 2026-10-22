@@ -18,7 +18,7 @@ import sys
 
 from PIL import Image
 
-from process_animation_art import OUT as FX, save_sprite
+from sprite_utils import FX, save_sprite
 
 OUT = os.path.join(os.path.dirname(FX), "symbols")
 CELL = 256
