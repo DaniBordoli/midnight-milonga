@@ -92,12 +92,20 @@ export const zIndexes = {
 	},
 };
 
-// placeholder art cut from the concept images: every state is a sprite, winning symbols switch to the lit variant
+// win spritesheet cells are this much larger than the still, so the motion has room (WIN_PAD in
+// tools/process_cartoon_symbols.py); the first frame lines up with the still
+const WIN_SCALE = 1.25;
+
+// cartoon symbols: a still for every state, and a looping win spritesheet while the symbol is part of a win
 const milongaSymbol = (key: string, size = 0.94) => {
 	const normal = { type: 'sprite', assetKey: key, sizeRatios: { width: size, height: size } } as const;
-	const lit = { type: 'sprite', assetKey: `${key}Win`, sizeRatios: { width: size, height: size } } as const;
+	const win = {
+		type: 'spriteSheet',
+		assetKey: `${key}Win`,
+		sizeRatios: { width: size * WIN_SCALE, height: size * WIN_SCALE },
+	} as const;
 	// 'explosion' is a state the SDK board knows but this game never sets; it shows the plain symbol
-	return { explosion: normal, static: normal, spin: normal, land: normal, win: lit, postWinStatic: lit };
+	return { explosion: normal, static: normal, spin: normal, land: normal, win, postWinStatic: normal };
 };
 
 export const SYMBOL_INFO_MAP = {
