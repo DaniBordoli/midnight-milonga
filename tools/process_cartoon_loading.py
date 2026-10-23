@@ -14,7 +14,8 @@ Prints the logo and bar sizes: LoadingScreen.svelte and Game.svelte size them by
 import os
 import sys
 
-from PIL import Image
+import numpy as np
+from PIL import Image, ImageFilter
 
 from sprite_utils import FX, fit, save_sprite
 from process_cartoon_background import cover
@@ -27,11 +28,24 @@ CUTOUTS = {
 }
 
 
+def darken_rim(img, width=5, factor=0.45):
+    """Darken the outermost `width` px of the opaque shape: the logo's outline ends in a light pink rim
+    that reads as a white edge once the logo is drawn small."""
+    alpha = img.getchannel("A")
+    inner = np.asarray(alpha.point(lambda v: 255 if v > 128 else 0).filter(ImageFilter.MinFilter(width * 2 + 1))) > 0
+    a = np.asarray(img).astype(np.float32)
+    rim = (a[..., 3] > 0) & ~inner
+    a[..., :3][rim] *= factor
+    return Image.fromarray(a.astype(np.uint8))
+
+
 def main(src):
     save_sprite(cover(Image.open(os.path.join(src, "fondo_a.webp"))), "loading_bg", FX)
     for name, (file, max_side) in CUTOUTS.items():
         img = Image.open(os.path.join(src, file)).convert("RGBA")
         img = fit(img.crop(img.getbbox()), max_side)
+        if name == "title":
+            img = darken_rim(img)
         save_sprite(img, name, FX)
         print("ok", name, img.size)
 
