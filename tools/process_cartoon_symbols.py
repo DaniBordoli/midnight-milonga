@@ -16,6 +16,7 @@ import math
 import os
 import sys
 
+import numpy as np
 from PIL import Image
 
 from sprite_utils import FX, save_sprite
@@ -40,17 +41,44 @@ def still(img):
     return cell, s, img.size
 
 
-def win_sheet(sheet, layout, still_size):
+def silhouette(img, size):
+    return np.asarray(img.getchannel("A").resize((size, size), Image.BILINEAR)) > 128
+
+
+def match_first_frame(frame, still_cell, side, s0, c0):
+    """Scale and centre that lay the first frame's silhouette best over the still's (highest overlap), so the
+    switch to the animation does not jump. Starts from the bounding-box guess (s0, c0), which is thrown off
+    when the first frame already shows sparkles or streaks around the object."""
+    work = side // 2  # compare at half resolution
+    target = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+    target.paste(still_cell, ((side - CELL) // 2, (side - CELL) // 2), still_cell)
+    target = silhouette(target, work)
+    best = (-1.0, s0, c0)
+    for s in np.arange(0.8, 1.21, 0.02) * s0:
+        f = frame.resize((max(1, round(frame.width * s)), max(1, round(frame.height * s))), Image.LANCZOS)
+        cx0, cy0 = c0[0] * s / s0, c0[1] * s / s0
+        for dx in range(-16, 17, 2):
+            for dy in range(-16, 17, 2):
+                cell = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+                cell.paste(f, (round(side / 2 - cx0 + dx), round(side / 2 - cy0 + dy)), f)
+                m = silhouette(cell, work)
+                iou = (m & target).sum() / max(1, (m | target).sum())
+                if iou > best[0]:
+                    best = (iou, s, (cx0 - dx, cy0 - dy))
+    return best[1], best[2]
+
+
+def win_sheet(sheet, layout, still_size, still_cell):
     fw, fh = sheet.width // layout["cols"], sheet.height // layout["rows"]
     frames = [
         sheet.crop(((i % layout["cols"]) * fw, (i // layout["cols"]) * fh, (i % layout["cols"] + 1) * fw, (i // layout["cols"] + 1) * fh))
         for i in range(layout["frames"])
     ]
-    # scale and offset come from the first frame, so it matches the still exactly
+    # scale and offset come from the first frame, so it matches the still
     x0, y0, x1, y1 = frames[0].getbbox()
-    s = max(still_size) / max(x1 - x0, y1 - y0)
     side = round(CELL * WIN_PAD)
-    cx, cy = (x0 + x1) / 2 * s, (y0 + y1) / 2 * s
+    s0 = max(still_size) / max(x1 - x0, y1 - y0)
+    s, (cx, cy) = match_first_frame(frames[0], still_cell, side, s0, ((x0 + x1) / 2 * s0, (y0 + y1) / 2 * s0))
     out = Image.new("RGBA", (side * COLS, side * math.ceil(len(frames) / COLS)), (0, 0, 0, 0))
     for i, f in enumerate(frames):
         f = f.resize((round(fw * s), round(fh * s)), Image.LANCZOS)
@@ -91,7 +119,7 @@ def main(src):
         save_sprite(cell, code, OUT)
         if code in layouts:
             sheet = Image.open(os.path.join(src, "animaciones", f"{code}_win_sheet.webp")).convert("RGBA")
-            out, side, count = win_sheet(sheet, layouts[code], size)
+            out, side, count = win_sheet(sheet, layouts[code], size, cell)
             save_sprite(out, f"{code}_win", OUT)
             write_sheet_json(code, side, count, out.size)
         print("ok", code, "+ win" if code in layouts else "(still only)")
