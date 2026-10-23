@@ -24,10 +24,10 @@ def fit(img, max_side):
     return img.resize((int(img.width * s), int(img.height * s)), Image.LANCZOS) if s < 1 else img
 
 
-def petal_sheet(petals, out_dir, max_side=160):
-    """Split a transparent image of separate petals into frames and write a Pixi spritesheet (same format as the
+def particle_sheet(pieces, name, out_dir, max_side=160):
+    """Split a transparent image of separate pieces into frames and write a Pixi spritesheet (same format as the
     sample coin sheet: frames 1.png..N.png and an animation named "coin", so the particle emitter can use it)."""
-    alpha = petals.getchannel("A")
+    alpha = pieces.getchannel("A")
     w, h = alpha.size
     small = alpha.point(lambda v: 255 if v > 40 else 0).resize((w // 4, h // 4), Image.NEAREST)
     boxes, label = [], 1
@@ -39,7 +39,7 @@ def petal_sheet(petals, out_dir, max_side=160):
         if len(xs) > 40:  # ignore specks
             boxes.append((int(xs.min()) * 4 - 4, int(ys.min()) * 4 - 4, int(xs.max()) * 4 + 8, int(ys.max()) * 4 + 8))
         label += 1
-    frames = [fit(petals.crop(box), max_side) for box in boxes]
+    frames = [fit(pieces.crop(box), max_side) for box in boxes]
     sheet_w = sum(f.width for f in frames) + 2 * len(frames)
     sheet = Image.new("RGBA", (sheet_w, max(f.height for f in frames)), (0, 0, 0, 0))
     meta, x = {}, 0
@@ -53,12 +53,12 @@ def petal_sheet(petals, out_dir, max_side=160):
             "sourceSize": {"w": f.width, "h": f.height},
         }
         x += f.width + 2
-    save_sprite(sheet, "petals_sheet", out_dir)
+    save_sprite(sheet, name, out_dir)
     data = {
         "frames": meta,
         "animations": {"coin": list(meta)},
-        "meta": {"image": "petals_sheet.webp", "format": "RGBA8888", "size": {"w": sheet.width, "h": sheet.height}, "scale": "1"},
+        "meta": {"image": f"{name}.webp", "format": "RGBA8888", "size": {"w": sheet.width, "h": sheet.height}, "scale": "1"},
     }
-    with open(os.path.join(out_dir, "petals_sheet.json"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(out_dir, f"{name}.json"), "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=1)
     return len(frames)

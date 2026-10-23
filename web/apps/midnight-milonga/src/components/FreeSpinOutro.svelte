@@ -23,7 +23,7 @@
 	import PressToContinue from './PressToContinue.svelte';
 	import WinCoins from './WinCoins.svelte';
 
-	// End of bonus: "TOTAL WIN" panel with the counted-up amount and rose petals.
+	// End of bonus: "TOTAL WIN" panel with the counted-up amount and golden sparkles.
 	const context = getContext();
 	const PANEL = { width: SYMBOL_SIZE * 5.6, height: SYMBOL_SIZE * 5.6 * (437 / 687) };
 	const pop = new Tween(0.7, { duration: 450, easing: backOut });

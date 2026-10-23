@@ -1,8 +1,8 @@
 export default {
 	coins: {
 		type: 'spriteSheet',
-		// rose petals replace the sample coins (same spritesheet format, see tools/process_cartoon_fx.py)
-		src: new URL('../../assets/sprites/milonga/fx/petals_sheet.json', import.meta.url).href,
+		// golden sparkles replace the sample coins (same spritesheet format, see tools/process_cartoon_fx.py)
+		src: new URL('../../assets/sprites/milonga/fx/win_sparkles_sheet.json', import.meta.url).href,
 	},
 	sound: {
 		type: 'audio',

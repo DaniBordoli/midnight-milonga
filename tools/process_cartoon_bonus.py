@@ -18,7 +18,7 @@ from sprite_utils import FX, fit, save_sprite
 from process_cartoon_background import cover
 from process_cartoon_ui import pad_to
 
-BACKGROUNDS = {"pista_bg": "pista_bg_a.webp", "tanda_bg": "tanda_bg_a.webp"}
+BACKGROUNDS = {"pista_bg": "pista_bg_c.webp", "tanda_bg": "tanda_bg_a.webp"}
 # output name: (source file, aspect to pad to or None to keep, max size)
 CUTOUTS = {
     "tanda_couple": ("tanda_couple_b.webp", None, 1024),

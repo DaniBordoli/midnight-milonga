@@ -1,14 +1,14 @@
-"""Glow effects and win petals from the Ludo cartoon art.
+"""Glow effects and win particles from the Ludo cartoon art.
 
 Usage (from the repo root):
     math\\env\\Scripts\\python.exe tools\\process_cartoon_fx.py "<slot>/7. Cartoon/chibi/efectos"
 
 Writes web/apps/midnight-milonga/static/assets/sprites/milonga/fx/:
-    petals_sheet.webp/.json  win particles, one frame per petal (see petal_sheet)
-    sparkles.webp            big-win backdrop, padded square
-    anticipation.webp        reel anticipation column; its hard edges are faded out, since it is drawn
-                             with additive blending and would otherwise read as a solid block
-    abrazo_trail.webp        golden trail across the Abrazo row
+    win_sparkles_sheet.webp/.json  win particles, one frame per golden sparkle (see particle_sheet)
+    sparkles.webp                  big-win backdrop, padded square
+    anticipation.webp              reel anticipation column; its hard edges are faded out, since it is drawn
+                                   with additive blending and would otherwise read as a solid block
+    abrazo_trail.webp              golden trail across the Abrazo row
 """
 
 import os
@@ -17,7 +17,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-from sprite_utils import FX, fit, petal_sheet, save_sprite
+from sprite_utils import FX, fit, particle_sheet, save_sprite
 from process_cartoon_ui import pad_to
 
 
@@ -41,7 +41,7 @@ def load(src, file):
 
 
 def main(src):
-    print("petals:", petal_sheet(load(src, "petalos_a.webp"), FX), "frames")
+    print("win sparkles:", particle_sheet(load(src, "particulas_destellos.webp"), "win_sparkles_sheet", FX), "frames")
     save_sprite(fit(pad_to(load(src, "destellos_b.webp"), 1), 1024), "sparkles", FX)
     save_sprite(fit(soften_column(load(src, "anticipacion_b.webp")), 1024), "anticipation", FX)
     save_sprite(fit(load(src, "estela_b.webp"), 1024), "abrazo_trail", FX)
