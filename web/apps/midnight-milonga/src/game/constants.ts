@@ -104,8 +104,11 @@ const milongaSymbol = (key: string, size = 0.94) => {
 		assetKey: `${key}Win`,
 		sizeRatios: { width: size * WIN_SCALE, height: size * WIN_SCALE },
 	} as const;
+	// code-driven motion on the still (SymbolSprite): a squash-and-bounce on landing, a gentle breath at rest
+	const land = { ...normal, motion: 'land' } as const;
+	const idle = { ...normal, motion: 'idle' } as const;
 	// 'explosion' is a state the SDK board knows but this game never sets; it shows the plain symbol
-	return { explosion: normal, static: normal, spin: normal, land: normal, win, postWinStatic: normal };
+	return { explosion: normal, static: idle, spin: normal, land, win, postWinStatic: idle };
 };
 
 export const SYMBOL_INFO_MAP = {
