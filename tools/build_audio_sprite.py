@@ -1,8 +1,8 @@
 """Build the game's audio sprite (sounds.mp3 + sounds.json) from the files in an audio folder.
 
 Usage: math\\env\\Scripts\\python.exe tools\\build_audio_sprite.py "<slot>/6. Audio"
-Needs ffmpeg on PATH. Effects come from tools/make_sfx.py (<sound key>.wav); the two music tracks are
-licensed downloads (see MUSIC below), looped as they are. The big-win music beds are an 8 s loop cut from
+Needs ffmpeg on PATH. Effects are <sound key>.wav files generated with Ludo.ai (the scatter stops 2-5
+are stop 1 pitched up); the two music tracks are licensed downloads (see MUSIC below), looped as they are. The big-win music beds are an 8 s loop cut from
 the free-spin track, shared by every tier until each tier has its own music.
 """
 
@@ -28,6 +28,7 @@ WIN_BEDS = ["bgm_winlevel_big", "bgm_winlevel_superwin", "bgm_winlevel_mega", "b
 # music sits well under the effects; free spins and big wins a little louder than the base game
 VOLUME = {"bgm_main": 0.25, "bgm_freespin": 0.35, **{key: 0.4 for key in WIN_BEDS}}
 LOOPED = set(MUSIC) | set(WIN_BEDS) | {"sfx_bigwin_coinloop"}
+EFFECT_PEAK = 0.7
 
 
 def decode(path):
@@ -85,9 +86,11 @@ def main(folder):
         if path.endswith(".wav"):
             sounds[os.path.basename(path)[:-4]] = decode(path)
 
-    # normalise music loudness to a common peak, effects keep the levels make_sfx.py gave them
-    for key in MUSIC:
-        sounds[key] *= 0.8 / max(1e-9, np.abs(sounds[key]).max())
+    # normalise loudness to a common peak: music at 0.8, effects (generated at uneven levels) at EFFECT_PEAK;
+    # the win beds keep the level they were cut at
+    for key in set(sounds) - set(WIN_BEDS):
+        peak = 0.8 if key in MUSIC else EFFECT_PEAK
+        sounds[key] *= peak / max(1e-9, np.abs(sounds[key]).max())
 
     gap = np.zeros((int(RATE * GAP), 2), dtype="<f4")
     parts, sprite, cursor = [], {}, 0
