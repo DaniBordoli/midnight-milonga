@@ -63,7 +63,7 @@ Pasan a tener **fondo transparente** y una **animación de victoria** (spriteshe
 
 ### P3 — Sonido
 - Efectos nuevos generados con Ludo: parada de rodillo, botones, victoria chica, anticipación, entradas, El Abrazo, la rosa y el Compás.
-- La música de Pixabay se mantiene, salvo que suene fuera de tono con el cartoon.
+- Música: también generada con Ludo (tema base, giros gratis y loop de premios grandes); reemplazó a la de Pixabay.
 
 ### FX que deben seguir siendo brillo sobre negro
 Anticipación, explosión de la rosa, estela del Abrazo y destellos: el código los dibuja en modo aditivo.

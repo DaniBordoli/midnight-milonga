@@ -1,9 +1,9 @@
 """Build the game's audio sprite (sounds.mp3 + sounds.json) from the files in an audio folder.
 
-Usage: math\\env\\Scripts\\python.exe tools\\build_audio_sprite.py "<slot>/6. Audio"
+Usage: math\\env\\Scripts\\python.exe tools\\build_audio_sprite.py "<slot>/7. Cartoon/chibi/audio"
 Needs ffmpeg on PATH. Effects are <sound key>.wav files generated with Ludo.ai (the scatter stops 2-5
-are stop 1 pitched up); the two music tracks are licensed downloads (see MUSIC below), looped as they are. The big-win music beds are an 8 s loop cut from
-the free-spin track, shared by every tier until each tier has its own music.
+are stop 1 pitched up). The music is generated with Ludo.ai too (see MUSIC below): the two tracks loop as
+they are, and the big-win bed is its own short track, crossfaded into a loop and shared by every win tier.
 """
 
 import json
@@ -18,11 +18,12 @@ RATE = 44100
 GAP = 1.0  # seconds of silence between sounds so the browser never bleeds into the next one
 OUT = os.path.join(os.path.dirname(__file__), "..", "web", "apps", "midnight-milonga", "static", "assets", "audio")
 
-# sound key -> file name fragment of the licensed track (Pixabay Content License)
+# sound key -> file name fragment of the music track
 MUSIC = {
-    "bgm_main": "rosas-de-la-noche",
-    "bgm_freespin": "tango-bleu",
+    "bgm_main": "bgm_main_ludo",
+    "bgm_freespin": "bgm_freespin_ludo",
 }
+BIG_WIN_TRACK = "bgm_bigwin_ludo"
 WIN_BEDS = ["bgm_winlevel_big", "bgm_winlevel_superwin", "bgm_winlevel_mega", "bgm_winlevel_epic", "bgm_winlevel_max"]
 # playback volume per sound (sounds.json config, applied by the SDK player); everything else plays at 1
 # music sits well under the effects; free spins and big wins a little louder than the base game
@@ -79,7 +80,9 @@ def main(folder):
     sounds = {}
     for key, fragment in MUSIC.items():
         sounds[key] = edge_fades(trim_silence(decode(find(folder, fragment))))
-    bed = loop_excerpt(sounds["bgm_freespin"], start=20, seconds=8) * 0.9
+    track = trim_silence(decode(find(folder, BIG_WIN_TRACK)))
+    bed = loop_excerpt(track, start=0, seconds=len(track) / RATE - 0.5)
+    bed *= 0.8 / max(1e-9, np.abs(bed).max())
     for key in WIN_BEDS:
         sounds[key] = bed
     for path in files(folder):
