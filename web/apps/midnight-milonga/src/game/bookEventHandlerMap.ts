@@ -182,7 +182,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	freeSpinRetrigger: async (bookEvent: BookEventOfType<'freeSpinRetrigger'>) => {
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_scatter_win_v2' });
 		await animateSymbols({ positions: bookEvent.positions });
-		await eventEmitter.broadcastAsync({ type: 'featureBanner', title: '+5 GIROS' });
+		await eventEmitter.broadcastAsync({ type: 'featureBanner', title: '+5 FREE SPINS' });
 		eventEmitter.broadcast({
 			type: 'freeSpinCounterUpdate',
 			current: stateUi.freeSpinCounterCurrent,

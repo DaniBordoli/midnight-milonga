@@ -28,6 +28,15 @@
 		props.symbolInfo;
 		if (!animated) props.oncomplete?.();
 	});
+
+	// the board waits on the win animation: if it never reports back (e.g. rewound by a prop change), report
+	// after WIN_TIMEOUT_MS so the round keeps moving; cleared as soon as the symbol leaves the win state
+	const WIN_TIMEOUT_MS = 2000;
+	$effect(() => {
+		if (!animated) return;
+		const timer = setTimeout(() => props.oncomplete?.(), WIN_TIMEOUT_MS);
+		return () => clearTimeout(timer);
+	});
 </script>
 
 {#if animated}

@@ -16,11 +16,12 @@
 
 	// El Abrazo: the couple dances a turn and a dip over the board while a golden trail crosses the Abrazo row.
 	const context = getContext();
-	// dance spritesheet frames are 384 x 381 (tools/process_cartoon_bonus.py)
-	const COUPLE = { width: SYMBOL_SIZE * 3.2 * (384 / 381), height: SYMBOL_SIZE * 3.2 };
+	// dance spritesheet frames are 251 x 384 (tools/process_cartoon_bonus.py)
+	const COUPLE = { width: SYMBOL_SIZE * 3.2 * (251 / 384), height: SYMBOL_SIZE * 3.2 };
 	// 25 frames in about 1.5 seconds at 60 fps
 	const DANCE_SPEED = 25 / 90;
 	const HOLD_MS = 350;
+	const DANCE_TIMEOUT_MS = 2500;
 
 	const board = $derived(context.stateGameDerived.boardLayout());
 	let show = $state(false);
@@ -33,12 +34,16 @@
 		abrazoDance: async (emitterEvent) => {
 			rowY = board.y - board.height / 2 + (emitterEvent.row - 0.5) * SYMBOL_SIZE;
 			trail.set(0, { duration: 0 });
-			await waitForResolve((resolve) => {
-				danced = resolve;
-				show = true;
-				alpha.set(1);
-				trail.set(1);
-			});
+			// the round waits on the dance; DANCE_TIMEOUT_MS keeps it moving if the animation never reports back
+			await Promise.race([
+				waitForResolve((resolve) => {
+					danced = resolve;
+					show = true;
+					alpha.set(1);
+					trail.set(1);
+				}),
+				waitForTimeout(DANCE_TIMEOUT_MS),
+			]);
 			await waitForTimeout(HOLD_MS);
 			await alpha.set(0);
 			show = false;
@@ -58,17 +63,22 @@
 				width={board.width * trail.current}
 				height={SYMBOL_SIZE * 0.9}
 			/>
-			<SpriteSheet
-				key="fxAbrazoDance"
-				anchor={{ x: 0.5, y: 1 }}
+			<!-- the position lives on the parent: any prop change on the sprite re-applies its textures, which
+			     rewinds the dance (e.g. on a resize mid-dance) -->
+			<Container
 				x={board.x}
 				y={Math.min(rowY + COUPLE.height * 0.45, board.y + board.height / 2 + SYMBOL_SIZE * 0.2)}
-				{...COUPLE}
-				animationSpeed={DANCE_SPEED}
-				loop={false}
-				onComplete={() => danced()}
-				play
-			/>
+			>
+				<SpriteSheet
+					key="fxAbrazoDance"
+					anchor={{ x: 0.5, y: 1 }}
+					{...COUPLE}
+					animationSpeed={DANCE_SPEED}
+					loop={false}
+					onComplete={() => danced()}
+					play
+				/>
+			</Container>
 		</Container>
 	</MainContainer>
 {/if}

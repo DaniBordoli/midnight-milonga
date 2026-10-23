@@ -70,7 +70,7 @@
 				x={center.x - SYMBOL_SIZE * 3.4}
 				y={center.y + SYMBOL_SIZE * 2.6}
 				width={SYMBOL_SIZE * 2.6}
-				height={SYMBOL_SIZE * 2.6 * (686 / 594)}
+				height={SYMBOL_SIZE * 2.6 * (686 / 468)}
 			/>
 		{/if}
 		<Container {...center} scale={pop.current}>
