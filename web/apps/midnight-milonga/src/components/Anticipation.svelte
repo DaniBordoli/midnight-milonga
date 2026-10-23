@@ -13,7 +13,9 @@
 		oncomplete: () => void;
 	};
 
-	// Golden spotlight column over the anticipated reel: fades in, pulses while spinning, fades out on stop.
+	// Golden spotlight column over the anticipated reel: fades in, pulses and trembles while spinning, fades out
+	// on stop (the stopped reels dim meanwhile, see ReelSymbol).
+	const SHAKE = SYMBOL_SIZE * 0.025;
 	const props: Props = $props();
 	const context = getContext();
 	const fade = new Tween(0, { duration: 250 });
@@ -36,10 +38,11 @@
 	anchor={0.5}
 	blendMode="add"
 	alpha={fade.current * (0.75 + 0.25 * Math.sin(pulse))}
-	width={SYMBOL_SIZE * 1.15}
+	width={SYMBOL_SIZE * (1.15 + 0.05 * Math.sin(pulse))}
 	height={SYMBOL_SIZE * (BOARD_DIMENSIONS.y + 0.4)}
 	x={context.stateGameDerived.boardLayout().x -
 		context.stateGameDerived.boardLayout().width * 0.5 +
-		(props.reel.reelIndex + REEL_PADDING) * SYMBOL_SIZE}
+		(props.reel.reelIndex + REEL_PADDING) * SYMBOL_SIZE +
+		SHAKE * Math.sin(pulse * 4.3) * Math.cos(pulse * 1.7)}
 	y={context.stateGameDerived.boardLayout().y}
 />

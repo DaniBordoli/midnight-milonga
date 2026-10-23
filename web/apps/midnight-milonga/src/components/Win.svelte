@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { Container, Text } from 'pixi-svelte';
+	import { Container } from 'pixi-svelte';
 	import { FadeContainer, WinCountUpProvider } from 'components-pixi';
 	import { waitForResolve, waitForTimeout } from 'utils-shared/wait';
 	import { bookEventAmountToCurrencyString } from 'utils-shared/amount';
@@ -16,6 +16,7 @@
 	import { OnMount } from 'components-shared';
 
 	import WinCoins from './WinCoins.svelte';
+	import WinAmount from './WinAmount.svelte';
 	import WinAnimation from './WinAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 	import { SYMBOL_SIZE, WIN_TEXT_STYLE } from '../game/constants';
@@ -65,14 +66,18 @@
 					>
 						{#if winLevelData?.animation}
 							<WinAnimation animationMap={winLevelData.animation}>
-								<Text
-									anchor={0.5}
+								<WinAmount
 									text={bookEventAmountToCurrencyString(countUpAmount)}
 									style={{ ...WIN_TEXT_STYLE, fontSize: SYMBOL_SIZE * 0.95 }}
+									completed={countUpCompleted}
 								/>
 							</WinAnimation>
 						{:else}
-							<Text anchor={0.5} text={bookEventAmountToCurrencyString(countUpAmount)} style={WIN_TEXT_STYLE} />
+							<WinAmount
+								text={bookEventAmountToCurrencyString(countUpAmount)}
+								style={WIN_TEXT_STYLE}
+								completed={countUpCompleted}
+							/>
 						{/if}
 					</Container>
 				</MainContainer>
